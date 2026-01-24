@@ -18,6 +18,7 @@ export const FONT_PATHS = {
 };
 
 export const FONT_FAMILIES: FontFamilies = {
+  // TODO: convert in "accent"
   default: {
     thin: "montserrat_thin",
     extra_light: "montserrat_extra_light",
@@ -28,6 +29,7 @@ export const FONT_FAMILIES: FontFamilies = {
     bold: "montserrat_bold",
     extra_bold: "montserrat_extra_bold",
   },
+  // TODO: add "base" (Inter)
   mono: {
     regular: "space_mono_regular",
   },
