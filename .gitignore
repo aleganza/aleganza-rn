@@ -1,60 +1,45 @@
-# =========================
-# Expo / React Native
-# =========================
-.expo/
-.expo-shared/
-web-build/
-dist/
+# dev temporary storage for env variables
+env.json
+*.env
 
-# Expo local env
-.env
-.env.*
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# =========================
-# Node
-# =========================
+# dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-# =========================
-# Metro / React Native
-# =========================
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
 .metro-health-check*
 
-# =========================
-# OS
-# =========================
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
 .DS_Store
-Thumbs.db
+*.pem
 
-# =========================
-# IDEs / Editors
-# =========================
-.vscode/*
-!.vscode/extensions.json
-.idea/
-*.swp
+# local env files
+.env*.local
 
-# =========================
-# Build outputs
-# =========================
-android/
-ios/
+# typescript
+*.tsbuildinfo
 
-# =========================
-# EAS
-# =========================
-.eas/
-
-# =========================
-# Coverage / Test
-# =========================
-coverage/
-
-# =========================
-# Misc
-# =========================
-*.log
+# generated native folders
+/ios
+/android
