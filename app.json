@@ -35,7 +35,27 @@
       "expo-router",
       "expo-font",
       "expo-web-browser",
-      "@react-native-community/datetimepicker"
-    ]
+      "@react-native-community/datetimepicker",
+      "react-native-compressor",
+      "expo-asset",
+      [
+        "react-native-video",
+        {
+          "enableNotificationControls": true,
+          "androidExtensions": {
+            "useExoplayerRtsp": false,
+            "useExoplayerSmoothStreaming": false,
+            "useExoplayerHls": true,
+            "useExoplayerDash": true
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0d12e7da-5621-439f-9dee-9d46a1dc28f6"
+      }
+    }
   }
 }

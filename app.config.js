@@ -1,5 +1,5 @@
 const NAME = "aleganza rn";
-const SLUG = "aleganza-rn";
+const SLUG = "aleganzarn";
 const IS_DEV = process.env.APP_VARIANT === "development";
 
 const appName = IS_DEV ? `${NAME} Dev` : NAME;

@@ -2,7 +2,15 @@ import { useTheme } from "@/lib/theme/useTheme";
 import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
-import { CalendarDays, Home, LucideIcon, Map, MessagesSquare, UserRound } from "lucide-react-native";
+import {
+  CalendarDays,
+  Home,
+  LucideIcon,
+  Map,
+  MessagesSquare,
+  UserRound,
+  Video,
+} from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { Txt } from "../ui/texts";
 
@@ -16,7 +24,9 @@ const TabBarButton: React.FC<
 }) => {
   const { theme } = useTheme();
 
-  const color = isFocused ? theme.colors.textSupporting : theme.colors.textMuted;
+  const color = isFocused
+    ? theme.colors.textSupporting
+    : theme.colors.textMuted;
   const fontFamily = isFocused
     ? theme.family.default.semi_bold
     : theme.family.default.medium;
@@ -78,6 +88,7 @@ export const TabBarBackground: React.FC<{}> = ({}) => {
 
 export function TabBar() {
   const { theme } = useTheme();
+
   return (
     <Tabs
       screenOptions={() => ({
@@ -108,44 +119,11 @@ export function TabBar() {
       />
 
       <Tabs.Screen
-        name="schedule"
+        name="video-player"
         options={(screenProps) => ({
-          title: "Agenda",
-          headerShown: false,
+          title: "Video Player",
           tabBarButton: (buttonProps) => (
-            <TabBarButton Icon={CalendarDays} {...buttonProps} />
-          ),
-        })}
-      />
-
-      <Tabs.Screen
-        name="discover"
-        options={(screenProps) => ({
-          title: "Esplora",
-          headerShown: false,
-          tabBarButton: (buttonProps) => (
-            <TabBarButton Icon={Map} {...buttonProps} />
-          ),
-        })}
-      />
-
-      <Tabs.Screen
-        name="chat"
-        options={(screenProps) => ({
-          title: "Chat",
-          headerShown: false,
-          tabBarButton: (buttonProps) => (
-            <TabBarButton Icon={MessagesSquare} {...buttonProps} />
-          ),
-        })}
-      />
-
-      <Tabs.Screen
-        name="profile"
-        options={(screenProps) => ({
-          title: "Profilo",
-          tabBarButton: (buttonProps) => (
-            <TabBarButton Icon={UserRound} {...buttonProps} />
+            <TabBarButton Icon={Video} {...buttonProps} />
           ),
         })}
       />
