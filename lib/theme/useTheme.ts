@@ -50,7 +50,8 @@ const getReactNavigationTheme = (
 export const useTheme = () => {
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
-  const systemTheme = useColorScheme() ?? "light";
+  const colorScheme = useColorScheme()
+  const systemTheme = colorScheme !== "unspecified" ? colorScheme : "light";
 
   const activeTheme = theme === "system" ? systemTheme : theme;
   const themeColors = COLORS[activeTheme];
