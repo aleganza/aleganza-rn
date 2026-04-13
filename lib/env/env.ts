@@ -1,11 +1,10 @@
-const getEnvironment = (): string => {
-  return process.env.NODE_ENV ?? "development";
-};
+const getEnvironment = (): string => process.env.NODE_ENV ?? "development";
 
-const keepDevelopmentFeatureInProduction = true
+const keepDevelopmentFeatureInProduction = false;
 
 const is = {
-  development: getEnvironment() === "development" || keepDevelopmentFeatureInProduction,
+  development:
+    getEnvironment() === "development" || keepDevelopmentFeatureInProduction,
   production: getEnvironment() === "production",
   test: getEnvironment() === "test",
 };

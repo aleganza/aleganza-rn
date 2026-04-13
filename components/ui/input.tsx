@@ -28,6 +28,8 @@ interface InputProps extends TextInputProps {
   searchBarLoading?: boolean;
 }
 
+// ZOD INTEGRATION NEEDED
+
 export const Input: React.FC<InputProps> = ({
   wrapperStyle,
   inputStyle,
@@ -97,6 +99,9 @@ export const Input: React.FC<InputProps> = ({
           },
           inputStyle,
         ]}
+        returnKeyType={isSearchBar ? "done" : "default"}
+        cursorColor={theme.colors.primary}
+        selectionColor={theme.colors.primary}
         placeholderTextColor={theme.colors.textMuted}
         value={text}
         onChangeText={handleChangeText}

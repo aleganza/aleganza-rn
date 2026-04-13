@@ -57,3 +57,24 @@ export const TxtGradient = forwardRef<Text, TxtGradientProps>(
     );
   }
 );
+
+export const MonoText = forwardRef<Text, TextProps>(
+  ({ style, ...props }, ref) => {
+    const { theme } = useTheme();
+
+    return (
+      <Txt
+        ref={ref}
+        style={[
+          {
+            fontFamily: theme.family.mono.regular,
+            fontSize: theme.fontSize.sm,
+            letterSpacing: 1
+          },
+          style,
+        ]}
+        {...props}
+      />
+    );
+  },
+);

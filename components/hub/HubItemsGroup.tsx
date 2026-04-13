@@ -2,6 +2,7 @@ import { useTheme } from "@/lib/theme/useTheme";
 import { View } from "react-native";
 
 import { Txt } from "../ui/texts";
+import HubItemsGroupLabel from "./HubItemsGroupLabel";
 
 const HubItemsGroup: React.FC<{
   label?: string;
@@ -12,19 +13,7 @@ const HubItemsGroup: React.FC<{
 
   return (
     <View style={{ gap: theme.spacing.sm }}>
-      {label && (
-        <Txt
-          style={{
-            // marginLeft: 18,
-            color: theme.colors.textMuted,
-            fontSize: theme.fontSize.sm,
-            fontFamily: theme.family.default.semi_bold,
-            textTransform: "uppercase",
-          }}
-        >
-          {label}
-        </Txt>
-      )}
+      {label && <HubItemsGroupLabel label={label} />}
 
       <View
         style={{
@@ -43,7 +32,7 @@ const HubItemsGroup: React.FC<{
             // marginLeft: 18,
             color: theme.colors.textMuted,
             fontSize: theme.fontSize.sm + 1,
-            fontFamily: theme.family.default.medium,
+            fontFamily: theme.family.accent.medium,
           }}
         >
           {description}

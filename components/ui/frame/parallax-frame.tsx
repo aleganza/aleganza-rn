@@ -32,6 +32,8 @@ import StaticSpacer from "../static-spacer";
 import { Header } from "./header";
 import { FrameProps } from "./types";
 
+// UNSTABLE
+
 export const ParallaxFrame: React.FC<FrameProps> = ({
   children,
   isFullScreenModal = false,

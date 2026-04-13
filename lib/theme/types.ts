@@ -11,6 +11,10 @@ export interface ThemeColors {
   textSupporting: ColorValue;
   textShy: ColorValue;
   textMuted: ColorValue;
+  icon: ColorValue;
+  iconSupporting: ColorValue;
+  iconShy: ColorValue;
+  iconMuted: ColorValue;
   support: ColorValue;
   success: ColorValue;
   alert: ColorValue;
@@ -36,7 +40,9 @@ type FontWeight =
 type FontFamily = Partial<Record<FontWeight, string>>;
 
 export interface FontFamilies {
-  default: FontFamily;
+  accent: FontFamily;
+  base: FontFamily;
+  mono: FontFamily;
   [key: string]: FontFamily;
 }
 

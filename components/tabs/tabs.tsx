@@ -1,18 +1,11 @@
-import { useTheme } from "@/lib/theme/useTheme";
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
-import { BlurView } from "expo-blur";
-import { Tabs } from "expo-router";
-import {
-  CalendarDays,
-  Home,
-  LucideIcon,
-  Map,
-  MessagesSquare,
-  UserRound,
-  Video,
-} from "lucide-react-native";
-import { Pressable, View } from "react-native";
-import { Txt } from "../ui/texts";
+import { useTheme } from '@/lib/theme/useTheme';
+import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
+import { Tabs } from 'expo-router';
+import { Home, LucideIcon, Shrimp, Squirrel } from 'lucide-react-native';
+import { Pressable, View } from 'react-native';
+
+import { Txt } from '../ui/texts';
 
 const TabBarButton: React.FC<
   { Icon: LucideIcon } & BottomTabBarButtonProps
@@ -119,11 +112,21 @@ export function TabBar() {
       />
 
       <Tabs.Screen
-        name="video-player"
+        name="two"
         options={(screenProps) => ({
-          title: "Video Player",
+          title: "Two",
           tabBarButton: (buttonProps) => (
-            <TabBarButton Icon={Video} {...buttonProps} />
+            <TabBarButton Icon={Squirrel} {...buttonProps} />
+          ),
+        })}
+      />
+
+      <Tabs.Screen
+        name="three"
+        options={(screenProps) => ({
+          title: "Three",
+          tabBarButton: (buttonProps) => (
+            <TabBarButton Icon={Shrimp} {...buttonProps} />
           ),
         })}
       />

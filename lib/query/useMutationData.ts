@@ -26,11 +26,11 @@ export function useMutationData<TData, TVariables = void, TError = unknown>({
     mutationFn,
     onError: (error) => {
       console.error(error);
-      toaster.error("Error");
+      // toaster.error("Error");
     },
     onSuccess: (data, variables, onMutateResult, context) => {
-      console.log("Mutation completed:", data);
-      toaster.success("Success");
+      // console.log("Mutation completed:", data);
+      // toaster.success("Success");
 
       if (onSuccess) {
         onSuccess(data, variables, onMutateResult, context);

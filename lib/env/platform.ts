@@ -8,7 +8,7 @@ export const isPlatform = {
   ios: getPlatform() === "ios",
   android: getPlatform() === "android",
   web: getPlatform() === "web",
-  native: getPlatform() === "ios" || getPlatform() === "android",
+  mobile: getPlatform() === "ios" || getPlatform() === "android",
 };
 
 export const platform = {

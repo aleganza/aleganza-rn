@@ -16,8 +16,8 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useTheme } from "../theme/useTheme";
 import { setToasterRef } from "./toaster";
+import { useTheme } from "../theme/useTheme";
 
 type Toast = {
   id: number;
@@ -29,7 +29,7 @@ type Toast = {
 type ToastContextType = {
   show: (
     message: string,
-    options?: Partial<Omit<Toast, "id" | "message">>
+    options?: Partial<Omit<Toast, "id" | "message">>,
   ) => void;
 };
 
@@ -49,7 +49,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const show = (
     message: string,
-    options: Partial<Omit<Toast, "id" | "message">> = {}
+    options: Partial<Omit<Toast, "id" | "message">> = {},
   ) => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, ...options }]);
@@ -74,9 +74,9 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
         ]}
         pointerEvents="box-none"
       >
-        {toasts.map((toast) => (
+        {toasts.map((toast, index) => (
           <ToastItem
-            key={toast.id}
+            key={`${toast.id}-${index}`}
             toast={toast}
             onClose={() => remove(toast.id)}
           />

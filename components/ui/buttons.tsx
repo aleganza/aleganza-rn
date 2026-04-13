@@ -165,7 +165,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
 interface PrimaryButtonProps extends Omit<BaseButtonProps, "variant"> {}
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = (props) => {
-  return <BaseButton variant="primary" {...props} />;
+  return <BaseButton variant="primary" textStyle={{ color: "black" }} {...props} />;
 };
 
 interface SecondaryButtonProps extends Omit<BaseButtonProps, "variant"> {}

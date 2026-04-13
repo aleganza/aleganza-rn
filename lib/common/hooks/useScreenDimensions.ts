@@ -6,30 +6,39 @@ interface ScreenDimensions {
   height: number;
   scale: number;
   fontScale: number;
+  min: number;
+  max: number;
 }
 
 export const useScreenDimensions = (): ScreenDimensions => {
-  const [screen, setScreen] = useState<ScreenDimensions>({
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    scale: Dimensions.get('window').scale,
-    fontScale: Dimensions.get('window').fontScale,
+  const [screen, setScreen] = useState<ScreenDimensions>(() => {
+    const { width, height, scale, fontScale } = Dimensions.get('window');
+    return {
+      width,
+      height,
+      scale,
+      fontScale,
+      min: Math.min(width, height),
+      max: Math.max(width, height),
+    };
   });
 
   useEffect(() => {
     const onChange = ({ window }: { window: ScaledSize }) => {
+      const { width, height, scale, fontScale } = window;
       setScreen({
-        width: window.width,
-        height: window.height,
-        scale: window.scale,
-        fontScale: window.fontScale,
+        width,
+        height,
+        scale,
+        fontScale,
+        min: Math.min(width, height),
+        max: Math.max(width, height),
       });
     };
 
     const subscription = Dimensions.addEventListener('change', onChange);
 
     return () => {
-      // Expo >= 46 usa subscription.remove()
       subscription.remove();
     };
   }, []);

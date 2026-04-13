@@ -1,9 +1,9 @@
 import { FRAME_MARGIN } from "@/lib/config";
+import { AniTouchableOpacity } from "@/lib/reanimated/components";
 import { useTheme } from "@/lib/theme/useTheme";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Txt } from "../texts";
@@ -22,11 +22,42 @@ export const Header: React.FC<HeaderProps> = ({
   const insets = useSafeAreaInsets();
 
   const renderHeaderIcons = (icons?: HeaderIcon[], prefix?: string) =>
-    icons?.map((i, index) => (
-      <Pressable key={`${prefix}-icon-${index}`} {...i}>
-        <i.icon size={theme.iconSize.md} color={theme.colors.text} />
-      </Pressable>
-    ));
+    icons?.map((i, index) => {
+      const scale = useSharedValue(1);
+      const opacity = useSharedValue(1);
+
+      const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }],
+        opacity: opacity.value,
+      }));
+
+      if (i.isLoading)
+        return <ActivityIndicator key={`${prefix}-icon-${index}`} />;
+
+      return (
+        <AniTouchableOpacity
+          key={`${prefix}-icon-${index}`}
+          activeOpacity={0.5}
+          onPress={i.onPress}
+          // onPressIn={() => {
+          //   scale.value = withTiming(0.9, { duration: 100 });
+          //   opacity.value = 0.6;
+          // }}
+          // onPressOut={() => {
+          //   scale.value = withTiming(1, { duration: 100 });
+          //   opacity.value = 1;
+          // }}
+          style={animatedStyle}
+        >
+          <i.icon
+            size={theme.iconSize.md}
+            color={i.accent ?? theme.colors.text}
+            fill={i.fillIcon ? (i.accent ?? theme.colors.text) : "transparent"}
+            {...i.iconProps}
+          />
+        </AniTouchableOpacity>
+      );
+    });
 
   return (
     <View
@@ -37,6 +68,9 @@ export const Header: React.FC<HeaderProps> = ({
           left: 0,
           width: "100%",
           zIndex: 10,
+          // borderBottomWidth: 1,
+          // borderBottomColor: theme.colors.mist,
+          backgroundColor: theme.colors.background,
         },
       ]}
       {...headerProps}
@@ -49,18 +83,12 @@ export const Header: React.FC<HeaderProps> = ({
           paddingTop: insets.top,
         }}
       >
-        <LinearGradient
-          // colors={["red", "red"]}
-          colors={[theme.colors.background, "rgba(0,0,0,0)"]}
-          style={StyleSheet.absoluteFill}
-        />
-
         <View
           style={{
             flexDirection: "column",
             alignItems: "center",
             width: "100%",
-            paddingVertical: headerText ? 12 : 0,
+            paddingVertical: headerText !== undefined ? 12 : 0,
           }}
           {...headerContentProps}
         >
@@ -73,16 +101,14 @@ export const Header: React.FC<HeaderProps> = ({
               alignItems: "center",
             }}
           >
-            {headerText && (
+            {headerText !== undefined && (
               <Txt
                 style={[
                   {
                     top: 0,
-                    fontFamily: theme.family.default.semi_bold,
+                    fontFamily: theme.family.accent.bold,
+                    fontSize: theme.fontSize.md,
                     maxWidth: "75%",
-                    textShadowColor: "rgba(0, 0, 0, 0.5)",
-                    textShadowOffset: { width: 1, height: 1 },
-                    textShadowRadius: 2,
                   },
                 ]}
                 numberOfLines={1}

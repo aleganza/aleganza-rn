@@ -1,18 +1,22 @@
 import { ThemeColors } from "./types";
 
 const COMMON_COLORS = {
-  // primary: "#0c69e5",
+  // primary: "#e8eadd",
 } as const;
 
 export const COLORS: Record<"light" | "dark", ThemeColors> = {
   light: {
     ...COMMON_COLORS,
-    primary: "#0c69e5",
+    primary: "#e8eadd",
     secondary: "#8c13e0",
     text: "#0d0d0d",
     textSupporting: "#000000bf",
     textShy: "#0000008c",
     textMuted: "#00000059",
+    icon: "#0d0d0d",
+    iconSupporting: "#404040",
+    iconShy: "#737373",
+    iconMuted: "#a6a6a6",
     support: "#d96b98",
     success: "#6ad478",
     alert: "#eb483d",
@@ -24,19 +28,23 @@ export const COLORS: Record<"light" | "dark", ThemeColors> = {
   },
   dark: {
     ...COMMON_COLORS,
-    primary: "#3380FF",
+    primary: "#e8eadd",
     secondary: "#B96CFF",
     text: "#f2f2f2",
     textSupporting: "#ffffffbf",
     textShy: "#ffffff8c",
     textMuted: "#ffffff59",
+    icon: "#f2f2f2",
+    iconSupporting: "#c6c6c7",
+    iconShy: "#8e8e8f",
+    iconMuted: "#686869",
     support: "#d96b98",
     success: "#6ad478",
     alert: "#d13c3c",
     idle: "#e5a04a",
     link: "#3380FF",
-    background: "#0e0e0f",
-    foreground: "#1e1e20",
-    mist: "#2e2e30",
+    background: '#12151b',
+    foreground: '#1c2028',
+    mist: '#2a2f3a',
   },
 };

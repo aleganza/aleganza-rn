@@ -96,7 +96,10 @@ const HubItem: React.FC<{
       <View>
         <View
           style={{
-            height: imageUri && !Icon ? theme.spacing.unit * 75 : theme.spacing.unit * 45, // TODO: static sizes
+            height:
+              imageUri && !Icon
+                ? theme.spacing.unit * 75
+                : theme.spacing.unit * 45, // TODO: static sizes
             flexDirection: "row",
             alignItems: "center",
             justifyContent: isLoading ? "center" : "space-between",
@@ -136,9 +139,11 @@ const HubItem: React.FC<{
                   <Switch
                     value={toggle.value}
                     onValueChange={toggle.onChange}
+                    style={{ opacity: toggle.disabled ? 0.5 : 1 }}
                     trackColor={{
                       false: theme.colors.textMuted,
-                      true: theme.colors.primary,
+                      // true: theme.colors.primary,
+                      true: "#34C759",
                     }}
                     thumbColor={theme.colors.text}
                     disabled={toggle.disabled}

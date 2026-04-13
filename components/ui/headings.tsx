@@ -12,7 +12,7 @@ const BaseHeading = forwardRef<Text, TextProps & { text: string }>(
         ref={ref}
         style={[
           {
-            fontFamily: theme.family.default.bold,
+            fontFamily: theme.family.accent.bold,
             fontSize: theme.fontSize.lg,
           },
           style,
@@ -38,7 +38,7 @@ export const H1 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h1,
             // lineHeight: theme.fontSize.h1,
-            fontFamily: theme.family.default.extra_bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
@@ -59,7 +59,7 @@ export const H2 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h2,
             // lineHeight: theme.fontSize.h2,
-            fontFamily: theme.family.default.bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
@@ -80,7 +80,7 @@ export const H3 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h3,
             // lineHeight: theme.fontSize.h3,
-            fontFamily: theme.family.default.bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
@@ -101,7 +101,7 @@ export const H4 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h4,
             // lineHeight: theme.fontSize.h4,
-            fontFamily: theme.family.default.bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
@@ -122,7 +122,7 @@ export const H5 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h5,
             // lineHeight: theme.fontSize.h5,
-            fontFamily: theme.family.default.bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
@@ -143,7 +143,7 @@ export const H6 = forwardRef<Text, TextProps & { text: string }>(
           {
             fontSize: theme.fontSize.h6,
             // lineHeight: theme.fontSize.h6,
-            fontFamily: theme.family.default.semi_bold,
+            fontFamily: theme.family.accent.bold,
           },
           style,
         ]}
