@@ -4,14 +4,16 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "tunnel": "expo start --tunnel",
-    "build:dev": "eas build --profile development",
-    "build": "eas build --profile production --platform ios",
-    "refresh": "rm -rf node_modules pnpm-lock.yaml package-lock.json",
-    "clean-start": "pnpm run refresh && expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "tunnel": "expo start --tunnel",
+    "build:ios:dev": "eas build --profile development --platform ios",
+    "build:ios:prod": "eas build --profile production --platform ios",
+    "build:android:dev": "eas build --profile development --platform android",
+    "build:android:prod": "eas build --profile production --platform android",
+    "build:prod": "eas build --profile production --platform all",
+    "refresh": "rm -rf node_modules pnpm-lock.yaml package-lock.json",
+    "clean-start": "pnpm run refresh && expo start -c"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.9",
