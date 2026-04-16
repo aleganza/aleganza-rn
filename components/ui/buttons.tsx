@@ -5,9 +5,10 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import { Txt } from "./texts";
+import { getContrastYIQ } from "@/lib/utils/color";
 
 // ============================================================================
 // TYPES
@@ -75,7 +76,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   const variantConfig = {
     primary: {
       backgroundColor: theme.colors.primary,
-      textColor: "#ffffff",
+      textColor: getContrastYIQ(theme.colors.primary.toString()) ?? "#ffffff",
       borderColor: "transparent",
       disabledBackground: theme.colors.mist,
       disabledText: theme.colors.textMuted,
@@ -96,7 +97,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
     },
     danger: {
       backgroundColor: theme.colors.alert,
-      textColor: "#ffffff",
+      textColor: getContrastYIQ(theme.colors.alert.toString()) ?? "#ffffff",
       borderColor: "transparent",
       disabledBackground: theme.colors.mist,
       disabledText: theme.colors.textMuted,
@@ -125,7 +126,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
 
   const textStyleConfig: TextStyle = {
     fontSize: currentSize.fontSize,
-    fontFamily: theme.family.default.semi_bold,
+    fontFamily: theme.family.accent.semi_bold,
     color: disabled ? currentVariant.disabledText : currentVariant.textColor,
   };
 
@@ -165,7 +166,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
 interface PrimaryButtonProps extends Omit<BaseButtonProps, "variant"> {}
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = (props) => {
-  return <BaseButton variant="primary" textStyle={{ color: "black" }} {...props} />;
+  return <BaseButton variant="primary" {...props} />;
 };
 
 interface SecondaryButtonProps extends Omit<BaseButtonProps, "variant"> {}
