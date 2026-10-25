@@ -28,12 +28,14 @@ theme.fontSize.h1;
 theme.lineHeight.tight;
 theme.lineHeight.relaxed;
 
-theme.family.accent.medium;
-theme.family.base.bold;
-theme.family.mono.regular;
+theme.family.accent.medium; // Google Sans Flex
+theme.family.base.bold; // Inter
+theme.family.mono.regular; // Space Mono
 
 // and more...
 ```
+
+Montserrat is still registered in `FONT_PATHS` and loaded, but it is not referenced by any family.
 
 ## layout
 

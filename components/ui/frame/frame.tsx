@@ -1,7 +1,6 @@
 import { FRAME_MARGIN } from "@/lib/config";
 import { useTheme } from "@/lib/theme/useTheme";
 import { router } from "expo-router";
-import { ArrowLeft, X } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   Image,
@@ -42,6 +41,7 @@ export const Frame: React.FC<FrameProps> = ({
   keyboardAvoidingProps,
   onHeaderFullHeightChange,
   onHeaderHeightChange,
+  bottomAction,
   style,
   contentContainerStyle,
 }) => {
@@ -51,7 +51,9 @@ export const Frame: React.FC<FrameProps> = ({
 
   const insets = useSafeAreaInsets();
   const contentTop = wrapContent
-    ? (useSafeArea ? insets.top : 0) + headerHeight
+    ? headerCustomContent
+      ? headerFullHeight
+      : (useSafeArea ? insets.top : 0) + headerHeight
     : undefined;
 
   const ContentLayer = scrollable ? ScrollView : View;
@@ -62,6 +64,8 @@ export const Frame: React.FC<FrameProps> = ({
       flexGrow: scrollable ? 1 : undefined,
       marginHorizontal: tight ? FRAME_MARGIN : 0,
       paddingTop: contentTop,
+      paddingBottom:
+        scrollable && bottomAction ? theme.spacing.base : undefined,
     },
     contentContainerStyle,
   ];
@@ -79,7 +83,9 @@ export const Frame: React.FC<FrameProps> = ({
   const WrapperLayer = useSafeArea ? SafeAreaView : View;
   const wrapperProps = useSafeArea
     ? {
-        edges: ["bottom", "left", "right"] as const,
+        edges: bottomAction
+          ? (["left", "right"] as const)
+          : (["bottom", "left", "right"] as const),
         mode: "padding" as const,
         ...safeAreaProps,
       }
@@ -88,7 +94,7 @@ export const Frame: React.FC<FrameProps> = ({
   if (isSubScreen) {
     leftIcons = [
       {
-        icon: ArrowLeft,
+        icon: "arrow-left",
         onPress: () => router.back(),
       },
       ...(leftIcons || []),
@@ -99,7 +105,7 @@ export const Frame: React.FC<FrameProps> = ({
     rightIcons = [
       ...(rightIcons || []),
       {
-        icon: X,
+        icon: "close",
         onPress: () => router.back(),
       },
     ];
@@ -147,6 +153,22 @@ export const Frame: React.FC<FrameProps> = ({
           {children}
         </ContentLayer>
       </WrapperLayer>
+
+      {bottomAction ? (
+        <View
+          style={{
+            backgroundColor: theme.colors.background,
+            paddingHorizontal: FRAME_MARGIN,
+            borderTopWidth: 0.75,
+            borderTopColor: theme.colors.mist,
+            paddingTop: theme.spacing.base,
+            paddingBottom:
+              Math.max(insets.bottom, theme.spacing.base) + theme.spacing.xs,
+          }}
+        >
+          {bottomAction}
+        </View>
+      ) : null}
     </>
   );
 

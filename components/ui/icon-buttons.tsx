@@ -1,16 +1,17 @@
 import { useTheme } from "@/lib/theme/useTheme";
-import { LucideIcon } from "lucide-react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import { Icon, IconName } from "./icons";
+
 interface CircleIconProps {
-  Icon: LucideIcon;
+  icon: IconName;
   onPress: () => void;
   showBg?: boolean;
 }
 
 export const CircleIcon: React.FC<CircleIconProps> = ({
-  Icon,
+  icon,
   onPress,
   showBg = true,
 }) => {
@@ -29,11 +30,7 @@ export const CircleIcon: React.FC<CircleIconProps> = ({
         backgroundColor: showBg ? "#FFFFFF20" : "transparent",
       }}
     >
-      <Icon
-        size={theme.iconSize.sm}
-        color={theme.colors.textShy}
-        strokeWidth={2.5}
-      />
+      <Icon name={icon} size="sm" color={theme.colors.textShy} />
     </TouchableOpacity>
   );
 };

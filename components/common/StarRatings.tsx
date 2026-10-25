@@ -1,7 +1,7 @@
 import { useTheme } from "@/lib/theme/useTheme";
-import { Star, StarHalf } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
+import { Icon } from "../ui/icons";
 import { Txt } from "../ui/texts";
 
 interface StarRatingsProps {
@@ -31,7 +31,12 @@ export const StarRatings: React.FC<StarRatingsProps> = ({
         const ratingValue = i * 2 + 1;
         if (rating >= ratingValue + 1) {
           return (
-            <Star key={i} size={starSize} color={starColor} fill={starColor} />
+            <Icon
+              key={i}
+              name="star-filled"
+              size={starSize}
+              color={starColor}
+            />
           );
         } else if (rating >= ratingValue) {
           return (
@@ -43,27 +48,27 @@ export const StarRatings: React.FC<StarRatingsProps> = ({
                 position: "relative",
               }}
             >
-              <Star
+              <Icon
+                name="star-filled"
                 size={starSize}
                 color={emptyColor}
-                fill={emptyColor}
                 style={{ position: "absolute", top: 0, left: 0 }}
               />
-              <StarHalf
+              <Icon
+                name="star-half-filled"
                 size={starSize}
                 color={starColor}
-                fill={starColor}
                 style={{ position: "absolute", top: 0, left: 0 }}
               />
             </View>
           );
         } else {
           return (
-            <Star
+            <Icon
               key={i}
+              name="star-filled"
               size={starSize}
               color={emptyColor}
-              fill={emptyColor}
             />
           );
         }

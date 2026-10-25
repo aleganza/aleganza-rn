@@ -1,39 +1,38 @@
-import { X } from "lucide-react-native";
 import React, {
   createContext,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
+import { useSegments } from "expo-router";
 import {
-  Animated,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { TOAST_POSITION, TOAST_UI } from "./config";
+import { useTabBarHeightStore } from "@/lib/layout/tabBar";
 import { setToasterRef } from "./toaster";
-import { useTheme } from "../theme/useTheme";
+import { ToastItemV1 } from "./toast-item-v1";
+import { ToastItemV2 } from "./toast-item-v2";
+import { ShowToastOptions, Toast } from "./types";
 
-type Toast = {
-  id: number;
-  message: string;
-  type?: "info" | "warning" | "success" | "error";
-  duration?: number;
-};
+const DEFAULT_DURATION = 3000;
 
 type ToastContextType = {
-  show: (
-    message: string,
-    options?: Partial<Omit<Toast, "id" | "message">>,
-  ) => void;
+  show: (title: string, options?: ShowToastOptions) => void;
 };
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+let nextToastId = 0;
 
 export const useToaster = () => {
   const ctx = useContext(ToastContext);
@@ -46,17 +45,17 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const insets = useSafeAreaInsets();
+  const segments = useSegments();
+  const isInTabs = segments.includes("(tabs)");
+  const tabBarHeight = useTabBarHeightStore((state) => state.height);
 
-  const show = (
-    message: string,
-    options: Partial<Omit<Toast, "id" | "message">> = {},
-  ) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, ...options }]);
+  const show = (title: string, options: ShowToastOptions = {}) => {
+    const id = ++nextToastId;
+    setToasts((prev) => [...prev, { id, title, ...options }]);
   };
 
   const remove = (id: number) =>
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
 
   useEffect(() => {
     setToasterRef({ show });
@@ -67,16 +66,26 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={insets.bottom}
+        pointerEvents="box-none"
         style={[
           StyleSheet.absoluteFill,
-          { justifyContent: "flex-end", marginBottom: insets.bottom },
+          TOAST_POSITION === "top"
+            ? {
+                justifyContent: "flex-start",
+                paddingTop: insets.top,
+              }
+            : {
+                justifyContent: "flex-end",
+                paddingBottom:
+                  isInTabs && tabBarHeight > 0
+                    ? tabBarHeight
+                    : insets.bottom,
+              },
         ]}
-        pointerEvents="box-none"
       >
-        {toasts.map((toast, index) => (
-          <ToastItem
-            key={`${toast.id}-${index}`}
+        {toasts.map((toast) => (
+          <ToastStackItem
+            key={toast.id}
             toast={toast}
             onClose={() => remove(toast.id)}
           />
@@ -86,105 +95,29 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const ToastItem = ({
+const ToastStackItem = ({
   toast,
   onClose,
 }: {
   toast: Toast;
   onClose: () => void;
 }) => {
-  const { theme } = useTheme();
-
-  const translateY = useRef(new Animated.Value(50)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
-    Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-
-    const timer = setTimeout(() => handleClose(), toast.duration || 3000);
+    const timer = setTimeout(onClose, toast.duration ?? DEFAULT_DURATION);
     return () => clearTimeout(timer);
-  }, []);
-
-  const handleClose = () => {
-    Animated.parallel([
-      Animated.timing(opacity, {
-        toValue: 0,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-      Animated.timing(translateY, {
-        toValue: 50,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-    ]).start(onClose);
-  };
-
-  let textColor = "#fff";
-  let bgColor;
-  switch (toast.type) {
-    case "error":
-      bgColor = theme.colors.alert;
-      break;
-
-    case "success":
-      textColor = "#000";
-      bgColor = theme.colors.success;
-      break;
-
-    case "info":
-      bgColor = theme.colors.primary;
-      break;
-
-    case "warning":
-      bgColor = theme.colors.idle;
-      break;
-
-    default:
-      bgColor = theme.colors.mist;
-      break;
-  }
+  }, [toast.id]);
 
   return (
     <Animated.View
-      style={[
-        {
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderRadius: theme.spacing.base,
-          marginHorizontal: theme.spacing.md,
-          paddingVertical: theme.spacing.base,
-          paddingHorizontal: theme.spacing.md,
-          marginTop: theme.spacing.base / 2,
-          shadowColor: "#000",
-          shadowOpacity: 0.2,
-          shadowRadius: 4,
-          elevation: 3,
-          backgroundColor: bgColor,
-          opacity,
-          transform: [{ translateY }],
-        },
-      ]}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(150)}
+      layout={LinearTransition.duration(200)}
     >
-      <Text
-        style={{ color: textColor, flex: 1, fontSize: theme.fontSize.base }}
-      >
-        {toast.message}
-      </Text>
-      <TouchableOpacity
-        onPress={handleClose}
-        style={{
-          marginLeft: theme.spacing.sm,
-        }}
-      >
-        <X color={textColor} size={theme.iconSize.base} strokeWidth={2} />
-      </TouchableOpacity>
+      {TOAST_UI === "v2" ? (
+        <ToastItemV2 toast={toast} onClose={onClose} />
+      ) : (
+        <ToastItemV1 toast={toast} onClose={onClose} />
+      )}
     </Animated.View>
   );
 };

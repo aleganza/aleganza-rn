@@ -1,12 +1,4 @@
 import { useTheme } from "@/lib/theme/useTheme";
-import {
-  ArrowUpFromLine,
-  Filter,
-  ListFilter,
-  LucideIcon,
-  Search,
-  X,
-} from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -18,6 +10,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Icon, IconName } from "./icons";
 import { Txt } from "./texts";
 
 interface InputProps extends TextInputProps {
@@ -43,16 +36,18 @@ export const Input: React.FC<InputProps> = ({
   const inputRef = useRef<TextInput>(null);
 
   const { theme } = useTheme();
-  const [text, setText] = useState(valueProp || "");
+  const isControlled = valueProp !== undefined;
+  const [innerText, setInnerText] = useState(valueProp ?? "");
+  const text = isControlled ? (valueProp ?? "") : innerText;
   const [wrapperHeight, setWrapperHeight] = useState(0);
 
   const handleChangeText = (t: string) => {
-    setText(t);
+    if (!isControlled) setInnerText(t);
     onChangeText?.(t);
   };
 
   const handleClear = () => {
-    setText("");
+    if (!isControlled) setInnerText("");
     onChangeText?.("");
     inputRef.current?.focus();
   };
@@ -84,7 +79,7 @@ export const Input: React.FC<InputProps> = ({
           {searchBarLoading ? (
             <ActivityIndicator size="small" color={theme.colors.textMuted} />
           ) : (
-            <Search size={theme.iconSize.base} color={theme.colors.textMuted} />
+            <Icon name="search" size="base" color={theme.colors.textMuted} />
           )}
         </View>
       )}
@@ -116,7 +111,7 @@ export const Input: React.FC<InputProps> = ({
             paddingHorizontal: theme.spacing.sm,
           }}
         >
-          <X size={theme.iconSize.base} color={theme.colors.textMuted} />
+          <Icon name="close" size="base" color={theme.colors.textMuted} />
         </TouchableOpacity>
       )}
     </View>
@@ -127,7 +122,7 @@ export interface SearchBarProps {
   loading?: boolean;
   inputProps?: Omit<InputProps, "isSearchBar" | "returnKeyType">;
   actions?: Array<{
-    Icon: LucideIcon;
+    icon: IconName;
     onPress: () => void;
   }>;
 }
@@ -176,8 +171,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               alignItems: "center",
             }}
           >
-            <a.Icon
-              size={theme.iconSize.sm}
+            <Icon
+              name={a.icon}
+              size="sm"
               color={theme.colors.textSupporting}
             />
           </TouchableOpacity>

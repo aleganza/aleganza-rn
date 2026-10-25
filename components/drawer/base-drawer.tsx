@@ -1,5 +1,4 @@
 import { useTheme } from "@/lib/theme/useTheme";
-import { X } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
@@ -25,7 +24,7 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
       {heading}
 
       {showCloseButton && (
-        <CircleIcon Icon={X} onPress={() => SheetManager.hide(drawerId)} />
+        <CircleIcon icon="close" onPress={() => SheetManager.hide(drawerId)} />
       )}
     </View>
   );

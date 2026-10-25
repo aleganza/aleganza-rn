@@ -5,7 +5,6 @@ import { AniImage, AniView } from "@/lib/reanimated/components";
 import { useTheme } from "@/lib/theme/useTheme";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { ArrowLeft, X } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -125,7 +124,7 @@ export const ParallaxFrame: React.FC<FrameProps> = ({
   if (isSubScreen) {
     leftIcons = [
       {
-        icon: ArrowLeft,
+        icon: "arrow-left",
         onPress: () => router.back(),
       },
       ...(leftIcons || []),
@@ -136,7 +135,7 @@ export const ParallaxFrame: React.FC<FrameProps> = ({
     rightIcons = [
       ...(rightIcons || []),
       {
-        icon: X,
+        icon: "close",
         onPress: () => router.back(),
       },
     ];

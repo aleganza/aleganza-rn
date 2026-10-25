@@ -1,15 +1,16 @@
 import { useTheme } from "@/lib/theme/useTheme";
 import { Image } from "expo-image";
-import { LucideIcon } from "lucide-react-native";
 import { ColorValue, View } from "react-native";
+
+import { Icon, IconName } from "../ui/icons";
 import { Txt } from "../ui/texts";
 
 const HubItemLabel: React.FC<{
   label: string;
-  Icon?: LucideIcon;
+  icon?: IconName;
   imageUri?: string;
   labelColor?: ColorValue;
-}> = ({ label, Icon, imageUri, labelColor }) => {
+}> = ({ label, icon, imageUri, labelColor }) => {
   const { theme } = useTheme();
 
   return (
@@ -22,15 +23,16 @@ const HubItemLabel: React.FC<{
         gap: theme.spacing.sm,
       }}
     >
-      {Icon && (
+      {icon && (
         <Icon
+          name={icon}
           style={{ alignSelf: "center" }}
           color={labelColor ?? theme.colors.textMuted}
-          size={theme.iconSize.sm}
+          size="sm"
         />
       )}
 
-      {imageUri && !Icon && (
+      {imageUri && !icon && (
         <Image
           source={{ uri: imageUri }}
           style={{

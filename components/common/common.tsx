@@ -4,7 +4,6 @@
 
 import { useTheme } from "@/lib/theme/useTheme";
 import { LinearGradient } from "expo-linear-gradient";
-import { LucideIcon } from "lucide-react-native";
 import {
   ColorValue,
   StyleProp,
@@ -14,6 +13,7 @@ import {
 } from "react-native";
 
 import { ExternalLink } from "../ui/external-link";
+import { Icon, IconName } from "../ui/icons";
 import { Txt, TxtGradient } from "../ui/texts";
 
 export const CardPropertyBullet = () => {
@@ -56,10 +56,10 @@ export const CardProperty: React.FC<{
   text: string;
   gradientProps?: React.ComponentProps<typeof LinearGradient>;
   textColor?: string | ColorValue;
-  Icon?: LucideIcon;
+  icon?: IconName;
   iconColor?: string | ColorValue;
   strong?: boolean;
-}> = ({ text, gradientProps, textColor, Icon, iconColor, strong = false }) => {
+}> = ({ text, gradientProps, textColor, icon, iconColor, strong = false }) => {
   const { theme } = useTheme();
 
   const textStyle = {
@@ -79,11 +79,8 @@ export const CardProperty: React.FC<{
         gap: theme.spacing.unit * 2,
       }}
     >
-      {Icon && (
-        <Icon
-          color={iconColor ?? theme.colors.textShy}
-          size={theme.iconSize.xs}
-        />
+      {icon && (
+        <Icon name={icon} color={iconColor ?? theme.colors.textShy} size="xs" />
       )}
 
       {gradientProps ? (
@@ -101,9 +98,9 @@ export const Property: React.FC<{
   text: string;
   gradientProps?: React.ComponentProps<typeof LinearGradient>;
   textColor?: string | ColorValue;
-  Icon: LucideIcon;
+  icon: IconName;
   iconColor?: string | ColorValue;
-}> = ({ text, gradientProps, textColor, Icon, iconColor }) => {
+}> = ({ text, gradientProps, textColor, icon, iconColor }) => {
   const { theme } = useTheme();
 
   const textStyle = {
@@ -121,10 +118,7 @@ export const Property: React.FC<{
         gap: theme.spacing.unit * 3,
       }}
     >
-      <Icon
-        color={iconColor ?? theme.colors.textShy}
-        size={theme.iconSize.sm - 1.5}
-      />
+      <Icon name={icon} color={iconColor ?? theme.colors.textShy} size="sm" />
 
       {gradientProps ? (
         <TxtGradient style={textStyle} gradientProps={gradientProps}>
@@ -168,9 +162,9 @@ export const LinkLabelWrapper: React.FC<{
 export const TinyLabel: React.FC<{
   text: string;
   textColor?: string | ColorValue;
-  Icon?: LucideIcon;
+  icon?: IconName;
   iconColor?: string | ColorValue;
-}> = ({ text, textColor, Icon, iconColor }) => {
+}> = ({ text, textColor, icon, iconColor }) => {
   const { theme } = useTheme();
 
   return (
@@ -186,11 +180,8 @@ export const TinyLabel: React.FC<{
         paddingVertical: theme.spacing.unit * 2,
       }}
     >
-      {Icon && (
-        <Icon
-          color={iconColor ?? theme.colors.textShy}
-          size={theme.iconSize.xs}
-        />
+      {icon && (
+        <Icon name={icon} color={iconColor ?? theme.colors.textShy} size="xs" />
       )}
       <Txt
         style={{

@@ -1,13 +1,15 @@
 import '@/components/drawer/registry';
 import 'react-native-reanimated';
 
+import { BottomSheetProvider } from '@/components/bottom-sheet/provider';
+import { PopupHost } from '@/components/popup';
 import { QueryProvider } from '@/lib/query/provider';
 import { FONT_PATHS } from '@/lib/theme/families';
 import { useTheme } from '@/lib/theme/useTheme';
 import { ToastProvider } from '@/lib/toaster/provider';
-import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
+import { ThemeProvider } from 'expo-router/react-navigation';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -47,10 +49,13 @@ function RootLayoutNav() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <ToastProvider>
             <SheetProvider>
-              <StatusBar
-                style={activeThemeName === "dark" ? "light" : "dark"}
-              />
-              <Slot />
+              <BottomSheetProvider>
+                <StatusBar
+                  style={activeThemeName === "dark" ? "light" : "dark"}
+                />
+                <Slot />
+                <PopupHost />
+              </BottomSheetProvider>
             </SheetProvider>
           </ToastProvider>
         </GestureHandlerRootView>

@@ -9,13 +9,14 @@ import {
 
 import { AniView } from "@/lib/reanimated/components";
 import { useTheme } from "@/lib/theme/useTheme";
+import { Icon, IconName } from "./icons";
 import { Txt } from "./texts";
 import { FRAME_MARGIN } from "@/lib/config";
 
 export interface TabItem {
   key: string;
   label: string;
-  Icon?: any;
+  icon?: IconName;
   content: React.ReactNode;
 }
 
@@ -119,7 +120,7 @@ export const TabBar: React.FC<CustomTabBarProps> = ({
           ]}
         />
 
-        {tabs.map(({ key, label, Icon }) => (
+        {tabs.map(({ key, label, icon }) => (
           <TouchableOpacity
             key={key}
             activeOpacity={0.5}
@@ -133,8 +134,9 @@ export const TabBar: React.FC<CustomTabBarProps> = ({
               zIndex: 1,
             }}
           >
-            {Icon && (
+            {icon && (
               <Icon
+                name={icon}
                 size={16}
                 color={
                   activeTab === key ? theme.colors.text : theme.colors.textMuted

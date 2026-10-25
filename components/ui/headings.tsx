@@ -14,6 +14,7 @@ const BaseHeading = forwardRef<Text, TextProps & { text: string }>(
           {
             fontFamily: theme.family.accent.bold,
             fontSize: theme.fontSize.lg,
+            letterSpacing: -0.3,
           },
           style,
         ]}

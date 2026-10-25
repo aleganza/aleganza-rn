@@ -12,13 +12,14 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { SheetManager } from "./manager";
 import { BaseBottomSheetProps, BottomSheetRef } from "./types";
 import { updateSheetProps } from "./useSheetProps";
 import { DRAWER_MARGIN } from "@/lib/config";
 import { useTheme } from "@/lib/theme/useTheme";
-import { collapseTopMarginForChild } from "react-native-render-html";
 
 export const BaseBottomSheet = <T = any,>(
   {
@@ -33,6 +34,8 @@ export const BaseBottomSheet = <T = any,>(
   ref?: React.Ref<BottomSheetRef<T>>,
 ) => {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+  const contentBottomPadding = insets.bottom + theme.spacing.lg;
 
   const animationConfigs = useBottomSheetSpringConfigs({
     damping: 80,
@@ -42,6 +45,7 @@ export const BaseBottomSheet = <T = any,>(
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [sheetProps, setSheetProps] = useState<T | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     updateSheetProps(name, sheetProps);
@@ -71,6 +75,8 @@ export const BaseBottomSheet = <T = any,>(
 
   const handleSheetChanges = useCallback(
     (index: number) => {
+      setIsOpen(index >= 0);
+
       if (index === -1) {
         setSheetProps(null);
       }
@@ -80,17 +86,24 @@ export const BaseBottomSheet = <T = any,>(
 
   const renderBackdrop = useCallback(
     (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.7}
-      />
+      <View
+        pointerEvents={isOpen ? "auto" : "none"}
+        style={StyleSheet.absoluteFill}
+      >
+        <BottomSheetBackdrop
+          {...props}
+          enableTouchThrough
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+          opacity={0.7}
+        />
+      </View>
     ),
-    [],
+    [isOpen],
   );
 
-  const SheetView = scrollable ? BottomSheetScrollView : BottomSheetView;
+  const content =
+    typeof children === "function" ? children(sheetProps) : children;
 
   return (
     <BottomSheet
@@ -107,9 +120,29 @@ export const BaseBottomSheet = <T = any,>(
 
       backgroundStyle={{ backgroundColor: theme.colors.background }}
     >
-      <SheetView style={{ flex: 1, padding: DRAWER_MARGIN }}>
-        {typeof children === "function" ? children(sheetProps) : children}
-      </SheetView>
+      {scrollable ? (
+        <BottomSheetScrollView
+          style={{
+            flex: 1,
+            paddingHorizontal: DRAWER_MARGIN,
+            paddingTop: DRAWER_MARGIN,
+          }}
+          contentContainerStyle={{ paddingBottom: contentBottomPadding }}
+        >
+          {content}
+        </BottomSheetScrollView>
+      ) : (
+        <BottomSheetView
+          style={{
+            flex: 1,
+            paddingHorizontal: DRAWER_MARGIN,
+            paddingTop: DRAWER_MARGIN,
+            paddingBottom: contentBottomPadding,
+          }}
+        >
+          {content}
+        </BottomSheetView>
+      )}
     </BottomSheet>
   );
 };

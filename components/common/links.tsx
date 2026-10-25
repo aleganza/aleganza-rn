@@ -1,5 +1,4 @@
 import { useTheme } from "@/lib/theme/useTheme";
-import { ExternalLink, Link } from "lucide-react-native";
 import { ColorValue, View } from "react-native";
 
 import { LinkLabelWrapper, Property } from "./common";
@@ -32,7 +31,7 @@ export default function Links({ data }: GalleryProps) {
           property={
             <Property
               text={link.href.replace(/^https?:\/\//, "")}
-              Icon={ExternalLink}
+              icon="external-link"
               textColor={link.color.toString()}
             />
           }

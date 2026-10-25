@@ -8,11 +8,6 @@
     "icon": "./assets/icon.png",
     "scheme": "aleganza-rn",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -32,6 +27,16 @@
     "plugins": [
       "expo-router",
       "expo-font",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
+        }
+      ],
       "expo-web-browser",
       "@react-native-community/datetimepicker",
       "react-native-compressor",
@@ -57,7 +62,6 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/notification_icon.png",
           "color": "#ffffff",
           "defaultChannel": "default",
           "enableBackgroundRemoteNotifications": false

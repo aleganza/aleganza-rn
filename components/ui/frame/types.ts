@@ -1,4 +1,3 @@
-import { LucideIcon, LucideProps } from "lucide-react-native";
 import {
   ColorValue,
   KeyboardAvoidingViewProps,
@@ -8,10 +7,11 @@ import {
 } from "react-native";
 import { SafeAreaViewProps } from "react-native-safe-area-context";
 
+import type { IconName, IconProps } from "../icons";
+
 export type HeaderIcon = {
-  icon: LucideIcon;
-  fillIcon? : boolean;
-  iconProps?: LucideProps
+  icon: IconName;
+  iconProps?: Omit<IconProps, "name">;
   isLoading?: boolean;
   onPress?: () => void;
   accent?: ColorValue;

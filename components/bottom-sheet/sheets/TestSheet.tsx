@@ -1,7 +1,11 @@
+import { H4 } from "@/components/ui/headings";
+import { Txt } from "@/components/ui/texts";
+import { useTheme } from "@/lib/theme/useTheme";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
+
 import { BaseBottomSheet } from "../base-bottom-sheet";
-import { View, Text, TouchableOpacity } from "react-native";
 import { SheetManager } from "../manager";
-import { useSheetProps } from "../useSheetProps";
 
 type Option = {
   label: string;
@@ -15,29 +19,37 @@ export type MyTestSheetProps = {
 };
 
 export const MyTestSheet = () => {
-  const props = useSheetProps<MyTestSheetProps>("simple-sheet");
-
-  const handleSelect = (value: string | number) => {
-    props?.onSelect?.(value);
-    SheetManager.hide("simple-sheet");
-  };
+  const { theme } = useTheme();
 
   return (
     <BaseBottomSheet<MyTestSheetProps> name="simple-sheet">
-      {(props) => (
-        <View style={{ padding: 16 }}>
-          {props?.title && <Text>{props.title}</Text>}
+      {(props) => {
+        const handleSelect = (value: string | number) => {
+          props?.onSelect?.(value);
+          SheetManager.hide("simple-sheet");
+        };
 
-          {props?.options?.map((item) => (
-            <TouchableOpacity
-              key={item.value}
-              onPress={() => handleSelect(item.value)}
-            >
-              <Text>{item.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+        return (
+          <View style={{ gap: theme.spacing.sm }}>
+            {props?.title ? <H4 text={props.title} /> : null}
+
+            {props?.options?.map((item) => (
+              <TouchableOpacity
+                key={item.value}
+                onPress={() => handleSelect(item.value)}
+                style={{
+                  paddingVertical: theme.spacing.sm,
+                  paddingHorizontal: theme.spacing.base,
+                  borderRadius: theme.borderRadius.sm,
+                  backgroundColor: theme.colors.foreground,
+                }}
+              >
+                <Txt>{item.label}</Txt>
+              </TouchableOpacity>
+            ))}
+          </View>
+        );
+      }}
     </BaseBottomSheet>
   );
 };

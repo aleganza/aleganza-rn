@@ -6,6 +6,7 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Icon } from "../icons";
 import { Txt } from "../texts";
 import { HeaderIcon, HeaderProps } from "./types";
 
@@ -20,6 +21,9 @@ export const Header: React.FC<HeaderProps> = ({
   const { theme } = useTheme();
 
   const insets = useSafeAreaInsets();
+
+  const hasIconsOnlyHeader =
+    headerText === undefined && !!(leftIcons?.length || rightIcons?.length);
 
   const renderHeaderIcons = (icons?: HeaderIcon[], prefix?: string) =>
     icons?.map((i, index) => {
@@ -49,10 +53,10 @@ export const Header: React.FC<HeaderProps> = ({
           // }}
           style={animatedStyle}
         >
-          <i.icon
-            size={theme.iconSize.md}
+          <Icon
+            name={i.icon}
+            size="md"
             color={i.accent ?? theme.colors.text}
-            fill={i.fillIcon ? (i.accent ?? theme.colors.text) : "transparent"}
             {...i.iconProps}
           />
         </AniTouchableOpacity>
@@ -99,6 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
+              minHeight: hasIconsOnlyHeader ? theme.iconSize.md : undefined,
             }}
           >
             {headerText !== undefined && (

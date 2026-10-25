@@ -2,6 +2,7 @@ import { useTheme } from "@/lib/theme/useTheme";
 import React from "react";
 import {
   ActivityIndicator,
+  StyleSheet,
   TextStyle,
   TouchableOpacity,
   View,
@@ -137,23 +138,38 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
       activeOpacity={0.7}
       style={[buttonStyle, style]}
     >
-      {loading ? (
-        <ActivityIndicator
-          color={
-            disabled ? currentVariant.disabledText : currentVariant.textColor
-          }
-          size="small"
-        />
-      ) : (
-        <>
-          {leftIcon && (
-            <View style={{ marginRight: currentSize.iconGap }}>{leftIcon}</View>
-          )}
-          <Txt style={[textStyleConfig, textStyle]}>{children}</Txt>
-          {rightIcon && (
-            <View style={{ marginLeft: currentSize.iconGap }}>{rightIcon}</View>
-          )}
-        </>
+      <View
+        collapsable={false}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: loading ? 0 : 1,
+        }}
+      >
+        {leftIcon && (
+          <View style={{ marginRight: currentSize.iconGap }}>{leftIcon}</View>
+        )}
+        <Txt style={[textStyleConfig, textStyle]}>{children}</Txt>
+        {rightIcon && (
+          <View style={{ marginLeft: currentSize.iconGap }}>{rightIcon}</View>
+        )}
+      </View>
+
+      {loading && (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            { alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          <ActivityIndicator
+            color={
+              disabled ? currentVariant.disabledText : currentVariant.textColor
+            }
+            size="small"
+          />
+        </View>
       )}
     </TouchableOpacity>
   );

@@ -13,9 +13,9 @@ const BaseTxt = forwardRef<Text, TextProps>(({ style, ...props }, ref) => {
       style={[
         {
           fontFamily: theme.family.default.regular,
-          fontSize: theme.fontSize.md,
+          fontSize: theme.fontSize.base,
           color: theme.colors.text,
-          letterSpacing: -0.5,
+          // letterSpacing: -0.5,
         },
         style,
       ]}

@@ -1,4 +1,4 @@
-import { Theme as ReactNavigationTheme } from '@react-navigation/native';
+import { Theme as ReactNavigationTheme } from 'expo-router/react-navigation';
 import { create } from 'zustand';
 
 import { COLORS } from './colors';
@@ -51,7 +51,7 @@ export const useTheme = () => {
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
   const colorScheme = useColorScheme()
-  const systemTheme = colorScheme !== "unspecified" ? colorScheme : "light";
+  const systemTheme = colorScheme === "dark" ? "dark" : "light";
 
   const activeTheme = theme === "system" ? systemTheme : theme;
   const themeColors = COLORS[activeTheme];

@@ -1,6 +1,5 @@
 import { useTheme } from "@/lib/theme/useTheme";
 import { Href, router } from "expo-router";
-import { ChevronRight, Link, LucideIcon } from "lucide-react-native";
 import {
   ActivityIndicator,
   ColorValue,
@@ -9,6 +8,7 @@ import {
   View,
 } from "react-native";
 
+import { Icon, IconName } from "../ui/icons";
 import { Txt } from "../ui/texts";
 import HubItemLabel from "./HubItemLabel";
 
@@ -27,7 +27,7 @@ const HubItem: React.FC<{
    * of both of them are passed, Icon
    * will be used
    */
-  Icon?: LucideIcon;
+  icon?: IconName;
   imageUri?: string;
   /**
    * isPremium, text, route, action, link, toggle, select and slider are exclusive.
@@ -51,7 +51,7 @@ const HubItem: React.FC<{
 }> = ({
   label,
   labelColor,
-  Icon,
+  icon,
   imageUri,
   text,
   textColor,
@@ -97,7 +97,7 @@ const HubItem: React.FC<{
         <View
           style={{
             height:
-              imageUri && !Icon
+              imageUri && !icon
                 ? theme.spacing.unit * 75
                 : theme.spacing.unit * 45, // TODO: static sizes
             flexDirection: "row",
@@ -112,7 +112,7 @@ const HubItem: React.FC<{
             <>
               <HubItemLabel
                 label={label}
-                Icon={Icon}
+                icon={icon}
                 imageUri={imageUri}
                 labelColor={labelColor}
               />
@@ -125,7 +125,9 @@ const HubItem: React.FC<{
                   alignSelf: "center",
                 }}
               >
-                {text ? (
+                {customRight ? (
+                  customRight
+                ) : text ? (
                   <Txt
                     style={{
                       color: textColor ?? theme.colors.textMuted,
@@ -149,20 +151,19 @@ const HubItem: React.FC<{
                     disabled={toggle.disabled}
                   />
                 ) : route ? (
-                  <ChevronRight
-                    size={theme.iconSize.base}
-                    strokeWidth={2.5}
+                  <Icon
+                    name="right"
+                    size="base"
                     color={theme.colors.textMuted}
                   />
                 ) : action ? (
                   <View />
                 ) : link ? (
-                  <Link
-                    size={theme.iconSize.md}
+                  <Icon
+                    name="link"
+                    size="md"
                     color={theme.colors.textMuted}
                   />
-                ) : customRight ? (
-                  customRight
                 ) : (
                   <></>
                 )}
