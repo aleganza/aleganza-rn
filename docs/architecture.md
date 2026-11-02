@@ -4,7 +4,7 @@ Expo Router app with a small set of domain-oriented folders. Everything is reach
 
 ## Entry points
 
-- `app/_layout.tsx` mounts the root providers: navigation theme, TanStack Query, toasts, popups, actions sheet, gorhom bottom sheets, and the router `Slot`.
+- `app/_layout.tsx` mounts the root providers: navigation theme, TanStack Query, toasts, popups, gorhom bottom sheets, and the router `Slot`.
 - `app/(app)/_layout.tsx` hosts the authenticated stack.
 - `app/(app)/(tabs)/_layout.tsx` renders the custom tab bar from `components/tabs/tabs.tsx`.
 - `app/(app)/(tabs)/index.tsx` is the Info tab: theme switch, runtime info, and links.
@@ -20,8 +20,7 @@ Expo Router app with a small set of domain-oriented folders. Everything is reach
 - `components/popup/` — declarative dialogs with a promise-based queue.
 - `components/hub/` — settings/profile style list rows.
 - `components/tabs/` — bottom tab bar.
-- `components/bottom-sheet/` — gorhom bottom sheets with `SheetManager` (mounted globally at the root).
-- `components/drawer/` — legacy `react-native-actions-sheet` system.
+- `components/bottom-sheet/` — gorhom bottom sheets with `SheetManager` and the standard `FormSheet` (mounted globally at the root).
 - `components/common/` — small shared presentational helpers.
 - `lib/theme/` — colors, families, sizes, `useTheme`.
 - `lib/toaster/` — toast API, provider, v1/v2 UIs.

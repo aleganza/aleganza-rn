@@ -1,1 +1,0 @@
-this is an old drawer/bottom-sheet, made with ```react-native-actions-sheet``` instead of ```gorhom/bottom-sheet```

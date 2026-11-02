@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { FormSheet } from "./form/form-sheet";
 import { ShowcaseSheet } from "./sheets/showcase-sheet";
 import { MyTestSheet } from "./sheets/TestSheet";
 
@@ -16,6 +17,7 @@ export const BottomSheetProvider: React.FC<{ children: ReactNode }> = ({
 
       <MyTestSheet />
       <ShowcaseSheet />
+      <FormSheet />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { SheetManager } from "@/components/bottom-sheet";
+import { openFormSheet, SheetManager } from "@/components/bottom-sheet";
 import { DemoCard, ShowcaseFrame } from "@/components/showcase";
 import { PrimaryButton, SecondaryButton } from "@/components/ui/buttons";
 import { Txt } from "@/components/ui/texts";
@@ -30,6 +30,31 @@ export default function SheetsShowcase() {
     setResult("showcase-sheet opened");
   };
 
+  const openForm = () => {
+    openFormSheet({
+      title: "Gorhom form sheet",
+      fields: [
+        {
+          type: "text",
+          key: "name",
+          label: "Name",
+          placeholder: "Type here",
+        },
+        {
+          type: "switch",
+          key: "active",
+          label: "Active",
+          defaultValue: true,
+        },
+      ],
+      submitLabel: "Save",
+      onSubmit: (values) => {
+        setResult(`form-sheet: ${JSON.stringify(values)}`);
+      },
+    });
+    setResult("form-sheet opened");
+  };
+
   return (
     <ShowcaseFrame
       title="Gorhom bottom sheets"
@@ -42,6 +67,10 @@ export default function SheetsShowcase() {
 
         <SecondaryButton onPress={openSimple}>
           Open simple sheet
+        </SecondaryButton>
+
+        <SecondaryButton onPress={openForm}>
+          Open form sheet
         </SecondaryButton>
       </DemoCard>
 
@@ -79,6 +108,10 @@ export default function SheetsShowcase() {
         <Txt style={{ color: theme.colors.textSupporting }}>
           Snap 30/65/95, scroll the rows, focus the input, then close with the
           keyboard open.
+        </Txt>
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          Form sheet: fill the fields, submit, then reopen to confirm values are
+          reset.
         </Txt>
       </DemoCard>
     </ShowcaseFrame>

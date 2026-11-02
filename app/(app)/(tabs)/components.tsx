@@ -38,6 +38,16 @@ const groups = [
       { label: "Gorhom bottom sheets", route: "/components/sheets", icon: "layers" as const },
     ],
   },
+  {
+    label: "Diagnostics",
+    items: [
+      {
+        label: "Native smoke test",
+        route: "/components/native-smoke",
+        icon: "settings-3" as const,
+      },
+    ],
+  },
 ];
 
 export default function ComponentsTabScreen() {

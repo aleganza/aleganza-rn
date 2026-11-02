@@ -37,6 +37,22 @@ EAS profiles live in `eas.json`. Environment-specific values are read through `a
 4. `pnpm exec expo export --platform android`.
 5. Rebuild the dev client after SDK or native dependency changes, then run the Components screens on a device.
 
+## Native smoke test
+
+Run **Components → Native smoke test** on a device after SDK or native dependency changes. It exercises the modules that the other demos do not cover:
+
+- device/application info, expo-asset load, expo-image preview
+- expo-haptics and react-native-haptic-feedback
+- expo-brightness read/set/restore
+- expo-screen-orientation read + portrait lock/unlock
+- expo-notifications permission, Android channel, local notification
+- expo-updates status (`isEnabled`, id, runtime version, channel)
+- gorhom `form-sheet` open/submit/close and value reset on reopen
+- react-native-video playback
+- react-native-compressor image compression
+
+Known limits: updates are disabled in a development client (the check reports the expected error), the app is portrait-only, and video playback needs network access.
+
 ## Docs and bundles
 
 `docs/` is excluded from EAS uploads. Metro does not bundle Markdown under `docs/` because nothing imports it and it lives outside `app/`. After an export, `find dist -iname "*.md"` should be empty.

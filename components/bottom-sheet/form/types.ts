@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface BaseField<T = any> {
   key: string;
   label?: string;
@@ -21,15 +23,6 @@ export interface SwitchField extends BaseField<boolean> {
   type: "switch";
 }
 
-export interface LocationField
-  extends BaseField<{
-    address: string;
-    geom: { lat: number; lng: number };
-  }> {
-  type: "location";
-  placeholder?: string;
-}
-
 export interface SelectField extends BaseField<string> {
   type: "select";
   options: { label: string; value: string }[];
@@ -45,9 +38,9 @@ export interface CustomField<T = any> extends BaseField<T> {
   type: "custom";
   render: (props: {
     value: T;
-    onChange: (v: T) => void;
+    onChange: (value: T) => void;
     field: CustomField<T>;
-  }) => React.ReactNode;
+  }) => ReactNode;
 }
 
 export type FieldConfig =
@@ -55,11 +48,10 @@ export type FieldConfig =
   | NumberField
   | SwitchField
   | CustomField
-  | LocationField
   | SelectField
   | DateTimeField;
 
-export interface FormDrawerOptions {
+export interface FormSheetOptions {
   title?: string;
   fields: FieldConfig[];
   mode?: "add" | "edit";

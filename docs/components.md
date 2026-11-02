@@ -10,7 +10,7 @@
 - `Press` — pressable wrapper with opacity or highlight feedback; used by the tab bar.
 - `Frame`, `ParallaxFrame` — screen scaffold with header, scroll area, safe area, keyboard avoiding, and `bottomAction`.
 - `Spacer`, `StaticSpacer` — layout spacing.
-- `Select`, `DatePicker`, `ActionSheet`, `LazyFlatList`, `StateScreens` — larger primitives.
+- `Select`, `DatePicker`, `LazyFlatList`, `StateScreens` — larger primitives.
 
 ## Icons
 
@@ -30,8 +30,8 @@ Use filled names (`home-4-filled`, `calendar-month-filled`, `user-3-filled`) for
 - `ChoiceGrid` — 2-column selectable cards. Pressing the selected item calls `onSelect(null)`. The selected label uses a computed contrast color, so it stays readable with any primary color.
 - `Popup` (`components/popup`) — use `popup.confirm` / `popup.alert` or render `BasePopup` for custom content.
 - `Toast` (`lib/toaster`) — `toaster.success(title, description?, duration?)` and the `show` hook, with a global `TOAST_UI` switch.
-- `BottomSheet` — gorhom sheets mounted by `BottomSheetProvider`; see [the local README](../components/bottom-sheet/README.md).
-- `Drawer` — legacy actions sheet, see [the local README](../components/drawer/README.md).
+- `BottomSheet` — gorhom sheets mounted by `BottomSheetProvider`; `FormSheet` is the standard form sheet, opened with `openFormSheet`; see [the local README](../components/bottom-sheet/README.md).
+- `Native smoke test` (`app/(app)/components/native-smoke.tsx`) — manual checks for device/application, expo-asset, expo-image, haptics, brightness, orientation, notifications, updates, gorhom form sheet, video, and compressor.
 
 ## Theme and store
 

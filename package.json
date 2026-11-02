@@ -47,7 +47,6 @@
     "expo-web-browser": "~57.0.3",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "react-native-actions-sheet": "^0.9.7",
     "react-native-compressor": "^1.16.0",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-haptic-feedback": "^3.0.0",

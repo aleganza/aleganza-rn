@@ -18,7 +18,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SheetManager } from "./manager";
 import { BaseBottomSheetProps, BottomSheetRef } from "./types";
 import { updateSheetProps } from "./useSheetProps";
-import { DRAWER_MARGIN } from "@/lib/config";
+import { SHEET_MARGIN } from "@/lib/config";
 import { useTheme } from "@/lib/theme/useTheme";
 
 export const BaseBottomSheet = <T = any,>(
@@ -27,15 +27,21 @@ export const BaseBottomSheet = <T = any,>(
     snapPoints = ["50%"],
     enablePanDownToClose = true,
     scrollable = false,
+    keyboardBehavior,
+    androidKeyboardInputMode,
     style,
     children,
+    footer,
     onPropsChange,
   }: BaseBottomSheetProps<T>,
   ref?: React.Ref<BottomSheetRef<T>>,
 ) => {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
-  const contentBottomPadding = insets.bottom + theme.spacing.lg;
+  const hasFooter = Boolean(footer);
+  const contentBottomPadding = hasFooter
+    ? theme.spacing.md
+    : insets.bottom + theme.spacing.lg;
 
   const animationConfigs = useBottomSheetSpringConfigs({
     damping: 80,
@@ -115,19 +121,21 @@ export const BaseBottomSheet = <T = any,>(
       backdropComponent={renderBackdrop}
       enableDynamicSizing={false}
       animationConfigs={animationConfigs}
-      handleIndicatorStyle={{backgroundColor: theme.colors.mist}}
+      keyboardBehavior={keyboardBehavior}
+      android_keyboardInputMode={androidKeyboardInputMode}
+      handleIndicatorStyle={{ backgroundColor: theme.colors.mist }}
       style={style}
-
       backgroundStyle={{ backgroundColor: theme.colors.background }}
     >
       {scrollable ? (
         <BottomSheetScrollView
           style={{
             flex: 1,
-            paddingHorizontal: DRAWER_MARGIN,
-            paddingTop: DRAWER_MARGIN,
+            paddingHorizontal: SHEET_MARGIN,
+            paddingTop: SHEET_MARGIN,
           }}
           contentContainerStyle={{ paddingBottom: contentBottomPadding }}
+          keyboardShouldPersistTaps="handled"
         >
           {content}
         </BottomSheetScrollView>
@@ -135,14 +143,27 @@ export const BaseBottomSheet = <T = any,>(
         <BottomSheetView
           style={{
             flex: 1,
-            paddingHorizontal: DRAWER_MARGIN,
-            paddingTop: DRAWER_MARGIN,
+            paddingHorizontal: SHEET_MARGIN,
+            paddingTop: SHEET_MARGIN,
             paddingBottom: contentBottomPadding,
           }}
         >
           {content}
         </BottomSheetView>
       )}
+
+      {hasFooter ? (
+        <View
+          style={{
+            paddingHorizontal: SHEET_MARGIN,
+            paddingTop: theme.spacing.sm,
+            paddingBottom: insets.bottom + theme.spacing.md,
+            backgroundColor: theme.colors.background,
+          }}
+        >
+          {footer}
+        </View>
+      ) : null}
     </BottomSheet>
   );
 };

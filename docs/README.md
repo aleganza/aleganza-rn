@@ -12,7 +12,6 @@ Index of the template documentation. Start here, then open the local READMEs nex
 - [Theme](../lib/theme/README.md)
 - [Store](../lib/store/README.md)
 - [Bottom sheet](../components/bottom-sheet/README.md)
-- [Drawer](../components/drawer/README.md)
 
 ## Rule
 
