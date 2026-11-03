@@ -3,13 +3,13 @@ import { Href, router } from "expo-router";
 import {
   ActivityIndicator,
   ColorValue,
-  Switch,
   TouchableHighlight,
   View,
 } from "react-native";
 
 import { Icon, IconName } from "../ui/icons";
 import { Txt } from "../ui/texts";
+import { Toggle } from "../ui/toggle";
 import HubItemLabel from "./HubItemLabel";
 
 const HubItem: React.FC<{
@@ -138,17 +138,11 @@ const HubItem: React.FC<{
                     {text}
                   </Txt>
                 ) : toggle ? (
-                  <Switch
+                  <Toggle
                     value={toggle.value}
                     onValueChange={toggle.onChange}
-                    style={{ opacity: toggle.disabled ? 0.5 : 1 }}
-                    trackColor={{
-                      false: theme.colors.textMuted,
-                      // true: theme.colors.primary,
-                      true: "#34C759",
-                    }}
-                    thumbColor={theme.colors.text}
                     disabled={toggle.disabled}
+                    accessibilityLabel={label}
                   />
                 ) : route ? (
                   <Icon

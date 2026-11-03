@@ -70,6 +70,11 @@ export default function InputsShowcase() {
         <PrimaryButton onPress={runSearchLoading}>
           Show loading for 1.5s
         </PrimaryButton>
+
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          The leading slot keeps its width, so the search text does not shift
+          when the icon becomes a spinner.
+        </Txt>
       </DemoCard>
 
       <DemoCard title="Disabled">

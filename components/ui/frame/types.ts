@@ -28,10 +28,22 @@ export interface HeaderProps {
   headerProps?: ViewProps;
   headerContentProps?: ViewProps;
   headerCustomContent?: React.ReactNode;
+  /**
+   * render the header in normal layout flow instead of overlaying the content
+   * defaults to false
+   */
+  inFlow?: boolean;
 }
 
-export interface FrameProps extends HeaderProps {
+export interface FrameProps extends Omit<HeaderProps, "inFlow"> {
   children: React.ReactNode;
+
+  /**
+   * render the header in normal layout flow instead of overlaying the content
+   * avoids the first-render measurement jump with headerCustomContent
+   * defaults to false
+   */
+  headerInFlow?: boolean;
 
   /**
    * pass true if used inside a tab screen

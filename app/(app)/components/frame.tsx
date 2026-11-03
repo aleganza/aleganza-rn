@@ -28,6 +28,11 @@ export default function FrameShowcase() {
             route="/components/frame/custom-header"
           />
           <HubItem
+            label="Custom header in flow"
+            icon="menu"
+            route="/components/frame/custom-header-flow"
+          />
+          <HubItem
             label="Bottom action and keyboard"
             icon="upload"
             route="/components/frame/bottom-action"

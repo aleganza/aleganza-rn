@@ -17,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
   headerProps,
   headerCustomContent,
   headerContentProps,
+  inFlow = false,
 }) => {
   const { theme } = useTheme();
 
@@ -42,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
         <AniTouchableOpacity
           key={`${prefix}-icon-${index}`}
           activeOpacity={0.5}
+          hitSlop={theme.spacing.xs}
           onPress={i.onPress}
           // onPressIn={() => {
           //   scale.value = withTiming(0.9, { duration: 100 });
@@ -67,11 +69,15 @@ export const Header: React.FC<HeaderProps> = ({
     <View
       style={[
         {
-          position: "absolute",
-          top: 0,
-          left: 0,
+          ...(inFlow
+            ? null
+            : {
+                position: "absolute" as const,
+                top: 0,
+                left: 0,
+                zIndex: 10,
+              }),
           width: "100%",
-          zIndex: 10,
           // borderBottomWidth: 1,
           // borderBottomColor: theme.colors.mist,
           backgroundColor: theme.colors.background,
@@ -132,6 +138,8 @@ export const Header: React.FC<HeaderProps> = ({
                       top: 0,
                       left: 0,
                       flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.base,
                     },
                   ]}
                 >
@@ -144,6 +152,8 @@ export const Header: React.FC<HeaderProps> = ({
                       top: 0,
                       right: 0,
                       flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.base,
                     },
                   ]}
                 >

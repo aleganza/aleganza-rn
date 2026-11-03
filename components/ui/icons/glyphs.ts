@@ -27,7 +27,7 @@ import Moon from "@mingcute/react-native/core-regular/moon";
 import Notification from "@mingcute/react-native/core-regular/notification";
 import Phone from "@mingcute/react-native/core-regular/phone";
 import Pic from "@mingcute/react-native/core-regular/pic";
-import Plus from "@mingcute/react-native/core-regular/plus";
+import Plus from "@mingcute/react-native/core-regular/add";
 import Right from "@mingcute/react-native/core-regular/right";
 import Search from "@mingcute/react-native/core-regular/search";
 import Settings3 from "@mingcute/react-native/core-regular/settings-3";

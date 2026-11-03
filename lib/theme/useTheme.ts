@@ -3,6 +3,7 @@ import { create } from 'zustand';
 
 import { COLORS } from './colors';
 import { FONT_FAMILIES } from './families';
+import { SHADOWS } from './shadows';
 import { BORDER_RADIUS, FONT_SIZES, ICON_SIZES, LINE_HEIGHTS, SPACING } from './sizes';
 import { ThemeColors, ThemeState } from './types';
 import { useColorScheme } from 'react-native';
@@ -69,6 +70,7 @@ export const useTheme = () => {
       spacing: SPACING,
       borderRadius: BORDER_RADIUS,
       iconSize: ICON_SIZES,
+      shadows: SHADOWS,
     },
     setTheme,
     activeThemeName: activeTheme,

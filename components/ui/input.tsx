@@ -71,9 +71,12 @@ export const Input: React.FC<InputProps> = ({
       {isSearchBar && (
         <View
           style={{
+            width: theme.iconSize.base,
             height: wrapperHeight,
+            marginLeft: theme.spacing.sm,
+            flexShrink: 0,
+            alignItems: "center",
             justifyContent: "center",
-            paddingLeft: theme.spacing.sm,
           }}
         >
           {searchBarLoading ? (

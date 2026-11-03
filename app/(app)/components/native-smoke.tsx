@@ -14,8 +14,12 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import * as Updates from "expo-updates";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform, View } from "react-native";
-import { Image as CompressorImage } from "react-native-compressor";
 import {
+  getFileSize as getCompressorFileSize,
+  Image as CompressorImage,
+} from "react-native-compressor";
+import {
+  getSystemHapticStatus,
   isSupported as isHapticFeedbackSupported,
   trigger as triggerHapticFeedback,
 } from "react-native-haptic-feedback";
@@ -23,7 +27,7 @@ import Video from "react-native-video";
 
 const ICON = require("@/assets/icon.png");
 const VIDEO_URL =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+  "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4";
 const NOTIFICATION_CHANNEL = "native-smoke";
 
 const formatValue = (value: unknown) => {
@@ -48,12 +52,20 @@ export default function NativeSmokeShowcase() {
   const [log, setLog] = useState<string[]>([]);
   const [assetUri, setAssetUri] = useState<string | null>(null);
   const [brightness, setBrightness] = useState<number | null>(null);
+  const [systemBrightness, setSystemBrightness] = useState<number | null>(null);
+  const [usingSystemBrightness, setUsingSystemBrightness] = useState<
+    boolean | null
+  >(null);
+  const [hapticStatus, setHapticStatus] = useState("unknown");
   const [orientation, setOrientation] = useState<string>("unknown");
   const [notificationStatus, setNotificationStatus] = useState("unknown");
   const [notificationId, setNotificationId] = useState<string | null>(null);
   const [videoStatus, setVideoStatus] = useState("idle");
   const [videoError, setVideoError] = useState<string | null>(null);
+  const [compressedUri, setCompressedUri] = useState<string | null>(null);
+  const [compressedSize, setCompressedSize] = useState<string | null>(null);
   const initialBrightness = useRef<number | null>(null);
+  const brightnessTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const push = (message: string) => {
     const time = new Date().toLocaleTimeString();
@@ -99,6 +111,19 @@ export default function NativeSmokeShowcase() {
       })
       .catch(() => {});
 
+    if (Platform.OS === "android") {
+      Brightness.getSystemBrightnessAsync()
+        .then(setSystemBrightness)
+        .catch(() => {});
+      Brightness.isUsingSystemBrightnessAsync()
+        .then(setUsingSystemBrightness)
+        .catch(() => {});
+    }
+
+    getSystemHapticStatus()
+      .then((status) => setHapticStatus(formatValue(status)))
+      .catch(() => {});
+
     ScreenOrientation.getOrientationAsync()
       .then((value) => setOrientation(ScreenOrientation.Orientation[value]))
       .catch(() => {});
@@ -106,7 +131,13 @@ export default function NativeSmokeShowcase() {
     return () => {
       Notifications.setNotificationHandler(null);
 
-      if (initialBrightness.current !== null) {
+      if (brightnessTimer.current) {
+        clearTimeout(brightnessTimer.current);
+      }
+
+      if (Platform.OS === "android") {
+        Brightness.restoreSystemBrightnessAsync().catch(() => {});
+      } else if (initialBrightness.current !== null) {
         Brightness.setBrightnessAsync(initialBrightness.current).catch(() => {});
       }
     };
@@ -123,20 +154,47 @@ export default function NativeSmokeShowcase() {
   const readBrightness = async () => {
     const value = await Brightness.getBrightnessAsync();
     setBrightness(value);
+
+    if (Platform.OS === "android") {
+      const [system, usingSystem] = await Promise.all([
+        Brightness.getSystemBrightnessAsync(),
+        Brightness.isUsingSystemBrightnessAsync(),
+      ]);
+      setSystemBrightness(system);
+      setUsingSystemBrightness(usingSystem);
+      return `${value.toFixed(2)} (system ${system.toFixed(2)}, override=${!usingSystem})`;
+    }
+
     return value.toFixed(2);
+  };
+
+  const releaseBrightnessOverride = async () => {
+    if (Platform.OS === "android") {
+      await Brightness.restoreSystemBrightnessAsync();
+    } else if (initialBrightness.current !== null) {
+      await Brightness.setBrightnessAsync(initialBrightness.current);
+    }
   };
 
   const setLowBrightness = async () => {
     await Brightness.setBrightnessAsync(0.3);
-    return readBrightness();
-  };
+    const value = await readBrightness().catch(() => "0.30");
 
-  const restoreBrightness = async () => {
-    if (initialBrightness.current === null) {
-      throw new Error("initial brightness not captured");
+    if (brightnessTimer.current) {
+      clearTimeout(brightnessTimer.current);
     }
 
-    await Brightness.setBrightnessAsync(initialBrightness.current);
+    brightnessTimer.current = setTimeout(() => {
+      releaseBrightnessOverride()
+        .then(readBrightness)
+        .catch(() => {});
+    }, 1500);
+
+    return `${value} (auto-restore in 1.5s)`;
+  };
+
+  const releaseBrightness = async () => {
+    await releaseBrightnessOverride();
     return readBrightness();
   };
 
@@ -221,11 +279,22 @@ export default function NativeSmokeShowcase() {
       throw new Error("asset localUri is null");
     }
 
+    const before = await getCompressorFileSize(asset.localUri).catch(
+      () => "unknown",
+    );
     const result = await CompressorImage.compress(asset.localUri, {
-      compressionMethod: "auto",
+      compressionMethod: "manual",
+      maxWidth: 128,
+      maxHeight: 128,
+      quality: 0.5,
+      output: "jpg",
     });
+    const after = await getCompressorFileSize(result).catch(() => "unknown");
 
-    return result;
+    setCompressedUri(result);
+    setCompressedSize(`${before} → ${after} bytes`);
+
+    return `${before} → ${after} bytes`;
   };
 
   const deviceRows = [
@@ -290,6 +359,10 @@ export default function NativeSmokeShowcase() {
       </DemoCard>
 
       <DemoCard title="Haptics">
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          supported: {String(isHapticFeedbackSupported())} · system:{" "}
+          {hapticStatus}
+        </Txt>
         <PrimaryButton
           onPress={() => run("expo-haptics light", hapticVibrate)}
         >
@@ -311,13 +384,35 @@ export default function NativeSmokeShowcase() {
             })
           }
         >
-          RN haptic feedback
+          RN haptic (respect settings)
+        </SecondaryButton>
+        <SecondaryButton
+          onPress={() =>
+            run("react-native-haptic-feedback force", () => {
+              triggerHapticFeedback("impactLight", {
+                enableVibrateFallback: true,
+                ignoreAndroidSystemSettings: true,
+              });
+              return `supported=${isHapticFeedbackSupported()} status=${hapticStatus}`;
+            })
+          }
+        >
+          RN haptic (force)
         </SecondaryButton>
       </DemoCard>
 
       <DemoCard title="Brightness">
         <Txt style={{ color: theme.colors.textSupporting }}>
-          Current: {brightness === null ? "unknown" : brightness.toFixed(2)}
+          App: {brightness === null ? "unknown" : brightness.toFixed(2)}
+          {Platform.OS === "android"
+            ? ` · System: ${systemBrightness === null ? "unknown" : systemBrightness.toFixed(2)} · Using system: ${
+                usingSystemBrightness === null
+                  ? "unknown"
+                  : usingSystemBrightness
+                    ? "yes"
+                    : "no (override active)"
+              }`
+            : ""}
         </Txt>
         <PrimaryButton onPress={() => run("brightness get", readBrightness)}>
           Read brightness
@@ -325,12 +420,12 @@ export default function NativeSmokeShowcase() {
         <SecondaryButton
           onPress={() => run("brightness set 0.3", setLowBrightness)}
         >
-          Set 0.3
+          Set 0.3 (auto-restore)
         </SecondaryButton>
         <SecondaryButton
-          onPress={() => run("brightness restore", restoreBrightness)}
+          onPress={() => run("brightness release override", releaseBrightness)}
         >
-          Restore initial
+          Release override
         </SecondaryButton>
       </DemoCard>
 
@@ -429,6 +524,10 @@ export default function NativeSmokeShowcase() {
           controls
           muted
           resizeMode="contain"
+          onLoadStart={() => {
+            setVideoStatus("loading");
+            setVideoError(null);
+          }}
           onLoad={() => {
             setVideoStatus("loaded");
             push("video: loaded");
@@ -447,12 +546,28 @@ export default function NativeSmokeShowcase() {
           Status: {videoStatus}
           {videoError ? ` · ${videoError}` : ""}
         </Txt>
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          Remote 1 MB sample; network required.
+        </Txt>
       </DemoCard>
 
       <DemoCard title="Compressor">
         <PrimaryButton onPress={() => run("compressor image", compressIcon)}>
           Compress icon
         </PrimaryButton>
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          Size: {compressedSize ?? "not compressed"}
+        </Txt>
+        {compressedUri ? (
+          <Image
+            source={{ uri: compressedUri }}
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: theme.borderRadius.md,
+            }}
+          />
+        ) : null}
       </DemoCard>
 
       <DemoCard title="Log">

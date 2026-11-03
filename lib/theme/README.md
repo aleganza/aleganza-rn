@@ -47,6 +47,16 @@ theme.iconSize.md;
 // and more...
 ```
 
+## shadows
+
+```ts
+theme.shadows.sm;
+theme.shadows.md;
+theme.shadows.lg;
+```
+
+Shadow tokens are cross-platform `boxShadow` strings. Use them instead of combining iOS `shadow*` properties with Android `elevation`; the result stays consistent across devices.
+
 ## set theme
 
 ```ts

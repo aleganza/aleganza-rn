@@ -1,4 +1,4 @@
-import { useToaster } from "./provider";
+import type { useToaster } from "./provider";
 import { ShowToastOptions } from "./types";
 
 export { TOAST_POSITION, TOAST_UI } from "./config";
@@ -11,9 +11,11 @@ type ToasterAPI = {
   neutral: (title: string, description?: string, duration?: number) => void;
 };
 
-let toasterRef: ReturnType<typeof useToaster> | null = null;
+type ToasterRef = Pick<ReturnType<typeof useToaster>, "show">;
 
-export const setToasterRef = (ref: ReturnType<typeof useToaster>) => {
+let toasterRef: ToasterRef | null = null;
+
+export const setToasterRef = (ref: ToasterRef) => {
   toasterRef = ref;
 };
 

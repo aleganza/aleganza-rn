@@ -46,11 +46,8 @@ export const ToastItemV1: React.FC<ToastItemProps> = ({ toast, onClose }) => {
         paddingVertical: theme.spacing.base,
         paddingHorizontal: theme.spacing.md,
         marginTop: theme.spacing.base / 2,
-        shadowColor: "#000",
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
         backgroundColor: bgColor,
+        boxShadow: theme.shadows.md,
       }}
     >
       <View style={{ flex: 1, gap: 2 }}>

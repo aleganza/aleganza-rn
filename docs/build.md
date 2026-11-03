@@ -42,14 +42,14 @@ EAS profiles live in `eas.json`. Environment-specific values are read through `a
 Run **Components → Native smoke test** on a device after SDK or native dependency changes. It exercises the modules that the other demos do not cover:
 
 - device/application info, expo-asset load, expo-image preview
-- expo-haptics and react-native-haptic-feedback
-- expo-brightness read/set/restore
+- expo-haptics Android engine and react-native-haptic-feedback with system status + forced mode
+- expo-brightness read, temporary set with auto-restore, system/override state, release override
 - expo-screen-orientation read + portrait lock/unlock
 - expo-notifications permission, Android channel, local notification
 - expo-updates status (`isEnabled`, id, runtime version, channel)
 - gorhom `form-sheet` open/submit/close and value reset on reopen
-- react-native-video playback
-- react-native-compressor image compression
+- react-native-video playback of the remote 1 MB sample
+- react-native-compressor image compression with before/after size and preview
 
 Known limits: updates are disabled in a development client (the check reports the expected error), the app is portrait-only, and video playback needs network access.
 

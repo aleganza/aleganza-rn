@@ -4,7 +4,9 @@ import { PrimaryButton, SecondaryButton } from "@/components/ui/buttons";
 import { Input } from "@/components/ui/input";
 import { Txt } from "@/components/ui/texts";
 import { useTheme } from "@/lib/theme/useTheme";
+import { toaster } from "@/lib/toaster/toaster";
 import React, { useState } from "react";
+import { View } from "react-native";
 
 export default function PopupShowcase() {
   const { theme } = useTheme();
@@ -92,6 +94,10 @@ export default function PopupShowcase() {
           Confirm shows a loading spinner for 1.2s and blocks backdrop
           dismissal while loading.
         </Txt>
+        <Txt style={{ color: theme.colors.textSupporting }}>
+          Focus the input: the keyboard must not cover the card. Trigger a toast
+          from inside the popup: it must render above the modal.
+        </Txt>
       </DemoCard>
 
       <DemoCard title="Result">
@@ -109,7 +115,16 @@ export default function PopupShowcase() {
         onConfirm={closeCustom}
         onCancel={() => setCustomVisible(false)}
       >
-        <Input placeholder="Type something" />
+        <View style={{ gap: theme.spacing.sm }}>
+          <Input placeholder="Type something" />
+          <SecondaryButton
+            onPress={() =>
+              toaster.success("Toast from popup", "Rendered above the modal")
+            }
+          >
+            Show toast from inside the popup
+          </SecondaryButton>
+        </View>
       </BasePopup>
     </ShowcaseFrame>
   );

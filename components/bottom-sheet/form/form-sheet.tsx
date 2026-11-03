@@ -5,9 +5,10 @@ import { CircleIcon } from "@/components/ui/icon-buttons";
 import { Input } from "@/components/ui/input";
 import { SelectFieldInput } from "@/components/ui/select";
 import { Txt } from "@/components/ui/texts";
+import { Toggle } from "@/components/ui/toggle";
 import { useTheme } from "@/lib/theme/useTheme";
 import React, { useLayoutEffect, useState } from "react";
-import { Switch, View } from "react-native";
+import { View } from "react-native";
 
 import { BaseBottomSheet } from "../base-bottom-sheet";
 import { useSheetProps } from "../useSheetProps";
@@ -107,9 +108,10 @@ export const FormSheet = () => {
             {field.label ? (
               <Txt style={{ fontSize: theme.fontSize.md }}>{field.label}</Txt>
             ) : null}
-            <Switch
+            <Toggle
               value={Boolean(values[field.key])}
               onValueChange={(value) => handleChange(field.key, value)}
+              accessibilityLabel={field.label}
             />
           </View>
         );

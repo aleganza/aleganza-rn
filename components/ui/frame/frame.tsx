@@ -33,6 +33,7 @@ export const Frame: React.FC<FrameProps> = ({
   leftIcons,
   rightIcons,
   headerCustomContent,
+  headerInFlow = false,
   scrollable = false,
   scrollViewProps,
   useSafeArea = false,
@@ -51,9 +52,11 @@ export const Frame: React.FC<FrameProps> = ({
 
   const insets = useSafeAreaInsets();
   const contentTop = wrapContent
-    ? headerCustomContent
-      ? headerFullHeight
-      : (useSafeArea ? insets.top : 0) + headerHeight
+    ? headerInFlow
+      ? 0
+      : headerCustomContent
+        ? headerFullHeight
+        : (useSafeArea ? insets.top : 0) + headerHeight
     : undefined;
 
   const ContentLayer = scrollable ? ScrollView : View;
@@ -119,6 +122,7 @@ export const Frame: React.FC<FrameProps> = ({
           leftIcons={leftIcons}
           rightIcons={rightIcons}
           headerCustomContent={headerCustomContent}
+          inFlow={headerInFlow}
           headerProps={{
             onLayout: (event) => {
               const { height } = event.nativeEvent.layout;

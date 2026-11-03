@@ -8,7 +8,8 @@
 - `Input`, `SearchBar` — controlled and uncontrolled input. `SearchBar.actions` takes `{ icon: IconName, onPress }`.
 - `CircleIcon` — compact circular icon button taking `icon: IconName`.
 - `Press` — pressable wrapper with opacity or highlight feedback; used by the tab bar.
-- `Frame`, `ParallaxFrame` — screen scaffold with header, scroll area, safe area, keyboard avoiding, and `bottomAction`.
+- `Toggle` — themed JS switch used by `HubItem` and form controls; animated thumb and track, disabled state, switch accessibility.
+- `Frame`, `ParallaxFrame` — screen scaffold with header, scroll area, safe area, keyboard avoiding, and `bottomAction`. Set `headerInFlow` to render the header in normal layout flow and avoid the first-render jump with `headerCustomContent`.
 - `Spacer`, `StaticSpacer` — layout spacing.
 - `Select`, `DatePicker`, `LazyFlatList`, `StateScreens` — larger primitives.
 
@@ -26,10 +27,10 @@ Use filled names (`home-4-filled`, `calendar-month-filled`, `user-3-filled`) for
 
 ## Content components
 
-- `HubWrapper`, `HubItemsGroup`, `HubItem`, `HubItemLabel` — list rows. `HubItem` accepts `icon?: IconName`, `text`, `route`, `action`, `link`, `toggle`, and `customRight`.
+- `HubWrapper`, `HubItemsGroup`, `HubItem`, `HubItemLabel` — list rows. `HubItem` accepts `icon?: IconName`, `text`, `route`, `action`, `link`, `toggle`, and `customRight`; toggles use the themed `Toggle` primitive.
 - `ChoiceGrid` — 2-column selectable cards. Pressing the selected item calls `onSelect(null)`. The selected label uses a computed contrast color, so it stays readable with any primary color.
-- `Popup` (`components/popup`) — use `popup.confirm` / `popup.alert` or render `BasePopup` for custom content.
-- `Toast` (`lib/toaster`) — `toaster.success(title, description?, duration?)` and the `show` hook, with a global `TOAST_UI` switch.
+- `Popup` (`components/popup`) — use `popup.confirm` / `popup.alert` or render `BasePopup` for custom content. `BasePopup` is keyboard-aware and hosts a toast viewport inside its modal layer.
+- `Toast` (`lib/toaster`) — `toaster.success(title, description?, duration?)` and the `show` hook, with a global `TOAST_UI` switch. `ToastViewport` is reused by the root provider and by `BasePopup` so toasts render above an open modal.
 - `BottomSheet` — gorhom sheets mounted by `BottomSheetProvider`; `FormSheet` is the standard form sheet, opened with `openFormSheet`; see [the local README](../components/bottom-sheet/README.md).
 - `Native smoke test` (`app/(app)/components/native-smoke.tsx`) — manual checks for device/application, expo-asset, expo-image, haptics, brightness, orientation, notifications, updates, gorhom form sheet, video, and compressor.
 

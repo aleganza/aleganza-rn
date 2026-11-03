@@ -1,10 +1,10 @@
+import { useSegments } from "expo-router";
 import React, {
   createContext,
   useContext,
   useEffect,
   useState,
 } from "react";
-import { useSegments } from "expo-router";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,8 +17,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { TOAST_POSITION, TOAST_UI } from "./config";
 import { useTabBarHeightStore } from "@/lib/layout/tabBar";
+import { TOAST_POSITION, TOAST_UI } from "./config";
 import { setToasterRef } from "./toaster";
 import { ToastItemV1 } from "./toast-item-v1";
 import { ToastItemV2 } from "./toast-item-v2";
@@ -27,7 +27,9 @@ import { ShowToastOptions, Toast } from "./types";
 const DEFAULT_DURATION = 3000;
 
 type ToastContextType = {
+  toasts: Toast[];
   show: (title: string, options?: ShowToastOptions) => void;
+  remove: (id: number) => void;
 };
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -44,10 +46,6 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const insets = useSafeAreaInsets();
-  const segments = useSegments();
-  const isInTabs = segments.includes("(tabs)");
-  const tabBarHeight = useTabBarHeightStore((state) => state.height);
 
   const show = (title: string, options: ShowToastOptions = {}) => {
     const id = ++nextToastId;
@@ -62,36 +60,56 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <ToastContext.Provider value={{ show }}>
+    <ToastContext.Provider value={{ toasts, show, remove }}>
       {children}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        pointerEvents="box-none"
-        style={[
-          StyleSheet.absoluteFill,
-          TOAST_POSITION === "top"
-            ? {
-                justifyContent: "flex-start",
-                paddingTop: insets.top,
-              }
-            : {
-                justifyContent: "flex-end",
-                paddingBottom:
-                  isInTabs && tabBarHeight > 0
-                    ? tabBarHeight
-                    : insets.bottom,
-              },
-        ]}
-      >
-        {toasts.map((toast) => (
-          <ToastStackItem
-            key={toast.id}
-            toast={toast}
-            onClose={() => remove(toast.id)}
-          />
-        ))}
-      </KeyboardAvoidingView>
+      <ToastViewport />
     </ToastContext.Provider>
+  );
+};
+
+export const ToastViewport: React.FC<{ inModal?: boolean }> = ({
+  inModal = false,
+}) => {
+  const ctx = useContext(ToastContext);
+  const insets = useSafeAreaInsets();
+  const segments = useSegments();
+  const isInTabs = segments.includes("(tabs)");
+  const tabBarHeight = useTabBarHeightStore((state) => state.height);
+
+  if (!ctx) return null;
+
+  const bottomOffset = inModal
+    ? insets.bottom
+    : isInTabs && tabBarHeight > 0
+      ? tabBarHeight
+      : insets.bottom;
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      pointerEvents="box-none"
+      style={[
+        StyleSheet.absoluteFill,
+        inModal ? { zIndex: 10 } : null,
+        TOAST_POSITION === "top"
+          ? {
+              justifyContent: "flex-start",
+              paddingTop: insets.top,
+            }
+          : {
+              justifyContent: "flex-end",
+              paddingBottom: bottomOffset,
+            },
+      ]}
+    >
+      {ctx.toasts.map((toast) => (
+        <ToastStackItem
+          key={toast.id}
+          toast={toast}
+          onClose={() => ctx.remove(toast.id)}
+        />
+      ))}
+    </KeyboardAvoidingView>
   );
 };
 

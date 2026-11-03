@@ -16,6 +16,7 @@ Wrap screens in `Frame`. The component owns header, safe area, scroll, and fixed
 ```
 
 - `headerCustomContent` increases the measured header height and automatically offsets the content.
+- `headerInFlow` opts into rendering the header in normal layout flow, removing the first-render measurement jump when a custom header is present. The default overlay mode is unchanged.
 - With `bottomAction`, `Frame` renders an in-flow bar below the scroll area, moves the bottom safe area to the bar, and pads the scroll content.
 - `isSubScreen` adds a back icon; `isFullScreenModal` adds a close icon.
 - `HeaderIcon` takes `icon: IconName` and optional `iconProps`.
@@ -35,7 +36,7 @@ const confirmed = await popup.confirm({
 await popup.alert({ message: "Saved" });
 ```
 
-`PopupHost` is mounted once in the root layout. Dialogs are queued and resolve in order. The backdrop dismisses unless `isLoading` is set on `BasePopup`; custom content uses `BasePopup` directly.
+`PopupHost` is mounted once in the root layout. Dialogs are queued and resolve in order. The backdrop dismisses unless `isLoading` is set on `BasePopup`; custom content uses `BasePopup` directly. `BasePopup` wraps its content in a `KeyboardAvoidingView` (`padding` on iOS, `height` on Android) and renders a `ToastViewport` inside the modal layer, so keyboard and toasts work while the popup is open.
 
 ## Toasts
 
@@ -52,9 +53,11 @@ With `TOAST_POSITION = "bottom"`, the provider uses `useSegments()` to detect th
 
 Tab screens register their real height through `useRegisterTabBarHeight()`, the same value they use to pad the scroll content.
 
+`ToastViewport` is exported from `lib/toaster/provider.tsx`. The root provider renders it for normal screens; `BasePopup` renders another instance with `inModal` so toasts are painted above the native modal window. Normal-screen positioning and the tab bar offset remain unchanged.
+
 ## Inputs
 
-`Input` is controlled when `value` is passed and uncontrolled otherwise. A controlled value always wins after mount, so parent-driven resets and formatting work. Use `SearchBar.actions` with icon names for trailing actions.
+`Input` is controlled when `value` is passed and uncontrolled otherwise. A controlled value always wins after mount, so parent-driven resets and formatting work. Use `SearchBar.actions` with icon names for trailing actions. `SearchBar` reserves a fixed-width leading slot, so swapping the search icon for the loading indicator does not shift the text.
 
 ## Selection
 
@@ -62,7 +65,7 @@ Tab screens register their real height through `useRegisterTabBarHeight()`, the 
 
 ## Lists and settings
 
-`HubItem` renders `customRight` first, then text, toggle, route chevron, action, or link icon. This lets a row combine a value with a custom control.
+`HubItem` renders `customRight` first, then text, toggle, route chevron, action, or link icon. This lets a row combine a value with a custom control. Toggles use `Toggle` (`components/ui/toggle.tsx`), a themed JS switch with a 180 ms animation and switch accessibility semantics; the same primitive is used by form sheets.
 
 ## Navigation
 
@@ -95,3 +98,5 @@ The backdrop is always mounted so its opacity follows `animatedIndex`, but a `po
 ## Styling
 
 Use theme tokens for colors, spacing, radii, fonts, and icon sizes. Keep margins for outer layout and use gaps or spacers between sibling elements.
+
+For shadows, use `theme.shadows.*` (`boxShadow` strings) instead of mixing iOS `shadow*` properties with Android `elevation`. `boxShadow` is parsed by the New Architecture on both platforms, so the same token produces the same visual spec everywhere. Do not put `overflow: "hidden"` on the shadowed view, otherwise the shadow is clipped.

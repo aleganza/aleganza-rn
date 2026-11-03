@@ -39,7 +39,7 @@ export const ToastItemV2: React.FC<ToastItemProps> = ({ toast, onClose }) => {
         padding: theme.spacing.base,
         backgroundColor: theme.colors.foreground,
         borderRadius: theme.borderRadius.md,
-        boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.08)",
+        boxShadow: theme.shadows.md,
       }}
     >
       <View

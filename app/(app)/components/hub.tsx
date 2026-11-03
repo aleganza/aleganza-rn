@@ -44,6 +44,11 @@ export default function HubShowcase() {
             toggle={{ value: toggle, onChange: setToggle }}
           />
           <HubItem
+            label="Disabled toggle"
+            icon="notification"
+            toggle={{ value: false, onChange: () => {}, disabled: true }}
+          />
+          <HubItem
             label="Custom right wins"
             icon="edit-2"
             text="this text is hidden"
